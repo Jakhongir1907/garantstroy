@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+use App\Http\Controllers\Api\OtherExpenseController;
 
 
 
@@ -62,6 +63,10 @@ Route::get('/get-user' , function (){
 //Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
 //    ->middleware(['auth', 'throttle:6,1'])
 //    ->name('verification.send');
+
+
+// Other Expenses
+        Route::apiResource('other-expenses' , OtherExpenseController::class);
 
 
 

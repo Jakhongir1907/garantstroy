@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 use App\Http\Controllers\Api\OtherExpenseController;
+use App\Http\Controllers\Api\CarExpenseController;
 
 
 
@@ -44,8 +45,17 @@ Route::post('/change-password', [PasswordChangeController::class, 'changePasswor
 
 Route::get('/get-user' , function (){
     $user = \Illuminate\Support\Facades\Auth::user();
+    $role = "user";
+    if($user->is_admin ==1){
+        $role = "admin";
+        return response()->json([
+            'user' => $user ,
+            'role_user' => $role
+        ]);
+    }
     return response()->json([
-        'user' => $user
+        'user' => $user ,
+        'role_user' => $role
     ]);
 })->middleware('auth:sanctum');
 
@@ -65,12 +75,26 @@ Route::get('/get-user' , function (){
 //    ->middleware(['auth', 'throttle:6,1'])
 //    ->name('verification.send');
 
+Route::middleware(['auth:sanctum'])->group(function (){
 
-// Other Expenses
-        Route::apiResource('other-expenses' , OtherExpenseController::class);
-        Route::get('/latest/other-expenses/{days}' , [OtherExpenseController::class , 'lastDays']);
-        Route::get('/filter/other-expenses' , [OtherExpenseController::class , 'filterData']);
+    Route::middleware(['admin'])->group(function (){
+    // Other Expenses
+    Route::apiResource('other-expenses' , OtherExpenseController::class);
+    Route::get('/latest/other-expenses/{days}' , [OtherExpenseController::class , 'lastDays']);
+    Route::get('/filter/other-expenses' , [OtherExpenseController::class , 'filterData']);
 //
+// Car Expenses
+    Route::apiResource('car-expenses' , CarExpenseController::class);
+    Route::get('/latest/car-expenses/{days}' , [CarExpenseController::class , 'lastDays']);
+    Route::get('/filter/car-expenses' , [CarExpenseController::class , 'filterData']);
+//
+    });
+});
+
+
+
+
+
 
 
 

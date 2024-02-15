@@ -17,17 +17,32 @@ class OtherExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $otherExpenses = OtherExpense::orderByDesc('date')->paginate(10);
-        return new OtherExpenseCollection($otherExpenses);
+        if($request->has('start_date') && $request->has('end_date')){
+            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+
+            // Get the total amount for the specified date range
+            $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }else{
+            $otherExpenses = OtherExpense::orderByDesc('date')->paginate(12);
+            return new OtherExpenseCollection($otherExpenses);
+        }
     }
 
     public function lastDays(string $days){
         $startDate = Carbon::now()->subDays($days)->toDateString();
         $otherExpenses = OtherExpense::where('date', '>=', $startDate)
-            ->orderByDesc('date')
-            ->paginate(10);
+            ->orderByDesc('date')->get();
         $totalAmount =  OtherExpense::where('date', '>=', $startDate)->sum('summa');
 
         return response()->json([
@@ -41,19 +56,6 @@ class OtherExpenseController extends Controller
         $request->validate([
             'start_date' => ['required' , 'date'] ,
             'end_date' => ['required' , 'date']
-        ]);
-        $startDateTime = Carbon::parse($request->start_date)->startOfDay();
-        $endDateTime = Carbon::parse($request->end_date)->endOfDay();
-
-        // Get the total amount for the specified date range
-        $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
-            ->sum('summa');
-        $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->get();
-
-        return response()->json([
-            'message' => "Filtered Other Expenses" ,
-            'totalAmount' => $totalAmount ,
-            'data' => $otherExpenses ,
         ]);
 
     }

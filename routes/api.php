@@ -68,6 +68,9 @@ Route::get('/get-user' , function (){
 
 // Other Expenses
         Route::apiResource('other-expenses' , OtherExpenseController::class);
+        Route::get('/latest/other-expenses/{days}' , [OtherExpenseController::class , 'lastDays']);
+        Route::get('/filter/other-expenses' , [OtherExpenseController::class , 'filterData']);
+//
 
 
 

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOtherExpenseRequest;
+use App\Http\Requests\UpdateOtherExpenseRequest;
 use App\Http\Resources\OtherExpenseCollection;
+use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowOtherExpenseResource;
 use App\Models\OtherExpense;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OtherExpenseController extends Controller
@@ -16,8 +19,43 @@ class OtherExpenseController extends Controller
      */
     public function index()
     {
-        $otherExpenses = OtherExpense::orderBy('date')->paginate(10);
+        $otherExpenses = OtherExpense::orderByDesc('date')->paginate(10);
         return new OtherExpenseCollection($otherExpenses);
+    }
+
+    public function lastDays(string $days){
+        $startDate = Carbon::now()->subDays($days)->toDateString();
+        $otherExpenses = OtherExpense::where('date', '>=', $startDate)
+            ->orderByDesc('date')
+            ->paginate(10);
+        $totalAmount =  OtherExpense::where('date', '>=', $startDate)->sum('summa');
+
+        return response()->json([
+            'message' => "Other Expenses , Last 30 days " ,
+            'totalAmount' => $totalAmount ,
+            'data' => $otherExpenses ,
+        ]);
+    }
+
+    public function filterData(Request $request){
+        $request->validate([
+            'start_date' => ['required' , 'date'] ,
+            'end_date' => ['required' , 'date']
+        ]);
+        $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+        $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+
+        // Get the total amount for the specified date range
+        $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
+            ->sum('summa');
+        $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->get();
+
+        return response()->json([
+            'message' => "Filtered Other Expenses" ,
+            'totalAmount' => $totalAmount ,
+            'data' => $otherExpenses ,
+        ]);
+
     }
 
     /**
@@ -38,7 +76,14 @@ class OtherExpenseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $otherExpense = OtherExpense::find($id);
+        if(!$otherExpense){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'Record not found!'
+            ]  , 404);
+        }
+        return new ShowOtherExpenseResource($otherExpense);
     }
 
     /**
@@ -52,9 +97,22 @@ class OtherExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOtherExpenseRequest $request, string $id)
     {
-        //
+        $otherExpense = OtherExpense::find($id);
+        if(!$otherExpense){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'Record not found!'
+            ]  , 404);
+        }
+        $otherExpense->update([
+            'summa' => $request->summa ,
+            'date' => $request->date ,
+            'comment' => $request->comment
+        ]);
+
+        return new ShowOtherExpenseResource($otherExpense);
     }
 
     /**
@@ -62,6 +120,18 @@ class OtherExpenseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $otherExpense = OtherExpense::find($id);
+        if(!$otherExpense){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'Record not found!'
+            ]  , 404);
+        }
+        $otherExpense->delete();
+
+        return new ReturnResponseResource([
+            'code' => 201 ,
+            'message' => 'Record has been deleted successfully!'
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\OtherExpense;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -15,11 +16,11 @@ class OtherExpenseCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'message' => "" ,
+            'message' => "All Other Expenses List" ,
+            'total_amount' => OtherExpense::sum('summa') ,
             'data' => $this->collection->map(function ($otherExpense){
                  return new ShowOtherExpenseResource($otherExpense);
             }) ,
-//            'total_amount' => $this->collection->sum('summa') ,
         ];
     }
 }

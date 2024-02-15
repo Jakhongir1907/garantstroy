@@ -15,6 +15,7 @@ class ShowOtherExpenseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'  => $this->id ,
             'summa' => $this->summa ,
             'date' => $this->date ,
             'comment' => $this->comment ,

@@ -11,7 +11,7 @@ class UpdateOtherExpenseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateOtherExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'summa' => ['required' , 'numeric']  ,
+            'date' => ['required' , 'date']  ,
+            'comment' => ['string']  ,
         ];
     }
 }

@@ -75,9 +75,9 @@ Route::get('/get-user' , function (){
 //    ->middleware(['auth', 'throttle:6,1'])
 //    ->name('verification.send');
 
-Route::middleware(['auth:sanctum'])->group(function (){
+//Route::middleware(['auth:sanctum'])->group(function (){
 
-    Route::middleware(['admin'])->group(function (){
+//    Route::middleware(['admin'])->group(function (){
     // Other Expenses
     Route::apiResource('other-expenses' , OtherExpenseController::class);
     Route::get('/latest/other-expenses/{days}' , [OtherExpenseController::class , 'lastDays']);
@@ -88,8 +88,8 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('/latest/car-expenses/{days}' , [CarExpenseController::class , 'lastDays']);
     Route::get('/filter/car-expenses' , [CarExpenseController::class , 'filterData']);
 //
-    });
-});
+//    });
+//});
 
 
 

@@ -17,10 +17,25 @@ class CarExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $carExpenses = CarExpense::orderByDesc('date')->paginate(12);
-        return new CarExpenseCollection($carExpenses);
+        if($request->start_date && $request->end_date){
+            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+            // Get the total amount for the specified date range
+            $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $carExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+            return response()->json([
+                'message' => "Filtered Car Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $carExpenses ,
+            ]);
+        }else{
+            $carExpenses = CarExpense::orderByDesc('date')->paginate(12);
+            return new CarExpenseCollection($carExpenses);
+        }
+
     }
     public function lastDays(string $days){
 
@@ -37,23 +52,7 @@ class CarExpenseController extends Controller
     }
 
     public function filterData(Request $request){
-        $request->validate([
-            'start_date' => ['required' , 'date'] ,
-            'end_date' => ['required' , 'date']
-        ]);
-        $startDateTime = Carbon::parse($request->start_date)->startOfDay();
-        $endDateTime = Carbon::parse($request->end_date)->endOfDay();
 
-        // Get the total amount for the specified date range
-        $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
-            ->sum('summa');
-        $carExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
-
-        return response()->json([
-            'message' => "Filtered Car Expenses" ,
-            'totalAmount' => $totalAmount ,
-            'data' => $carExpenses ,
-        ]);
 
     }
     /**

@@ -19,7 +19,8 @@ class OtherExpenseController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->has('start_date') && $request->has('end_date')){
+        if($request->start_date && $request->end_date){
+
             $startDateTime = Carbon::parse($request->start_date)->startOfDay();
             $endDateTime = Carbon::parse($request->end_date)->endOfDay();
 
@@ -53,10 +54,7 @@ class OtherExpenseController extends Controller
     }
 
     public function filterData(Request $request){
-        $request->validate([
-            'start_date' => ['required' , 'date'] ,
-            'end_date' => ['required' , 'date']
-        ]);
+
 
     }
 

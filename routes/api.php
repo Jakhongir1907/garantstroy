@@ -33,15 +33,16 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
+
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:sanctum')
     ->name('logout');
+
 Route::post('/change-password', [PasswordChangeController::class, 'changePassword'])
     ->middleware('auth:sanctum')
     ->name('change.password');
 
 Route::get('/get-user' , function (){
-
     $user = \Illuminate\Support\Facades\Auth::user();
     return response()->json([
         'user' => $user

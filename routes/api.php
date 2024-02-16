@@ -76,7 +76,7 @@ Route::get('/get-user' , function (){
 //    ->name('verification.send');
 
 //Route::middleware(['auth:sanctum'])->group(function (){
-
+//
 //    Route::middleware(['admin'])->group(function (){
     // Other Expenses
     Route::apiResource('other-expenses' , OtherExpenseController::class);

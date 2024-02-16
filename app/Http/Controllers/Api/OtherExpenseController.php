@@ -19,25 +19,7 @@ class OtherExpenseController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->start_date && $request->end_date){
 
-            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
-            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
-
-            // Get the total amount for the specified date range
-            $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
-            $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
-
-            return response()->json([
-                'message' => "Filtered Other Expenses" ,
-                'totalAmount' => $totalAmount ,
-                'data' => $otherExpenses ,
-            ]);
-        }else{
-            $otherExpenses = OtherExpense::orderByDesc('date')->paginate(12);
-            return new OtherExpenseCollection($otherExpenses);
-        }
     }
 
     public function lastDays(string $days){
@@ -55,6 +37,52 @@ class OtherExpenseController extends Controller
 
     public function filterData(Request $request){
 
+        if($request->start_date && $request->end_date){
+            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+
+            // Get the total amount for the specified date range
+            $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }elseif($request->start_date && !$request->end_date){
+            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+
+            // Get the total amount for the specified date range
+            $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }elseif(!$request->start_date && $request->end_date){
+            $startDateTime = Carbon::parse('2000-01-01')->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+
+            // Get the total amount for the specified date range
+            $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }else{
+            $otherExpenses = OtherExpense::orderByDesc('date')->paginate(12);
+            return new OtherExpenseCollection($otherExpenses);
+        }
 
     }
 

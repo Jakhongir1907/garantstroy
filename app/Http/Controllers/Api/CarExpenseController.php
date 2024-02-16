@@ -53,6 +53,60 @@ class CarExpenseController extends Controller
 
     public function filterData(Request $request){
 
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        if(!empty($endDate) && !empty($startDate)){
+            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+
+            // Get the total amount for the specified date range
+            $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $otherExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'total_mount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }elseif(!empty($startDate) && empty($endDate)){
+            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+            $endDateTime = Carbon::now()->endOfDay();
+
+            // Get the total amount for the specified date range
+            $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $otherExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }elseif(empty($startDate) && !empty($endDate)){
+            $startDateTime = Carbon::parse('2000-01-01')->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+
+            // Get the total amount for the specified date range
+            $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
+                ->sum('summa');
+            $otherExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
+
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }else{
+            $otherExpenses = CarExpense::orderByDesc('date')->paginate(12);
+            $totalAmount = CarExpense::sum('summa');
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
+        }
 
     }
     /**

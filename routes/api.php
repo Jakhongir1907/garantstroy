@@ -86,7 +86,7 @@ Route::get('/get-user' , function (){
 // Car Expenses
     Route::apiResource('car-expenses' , CarExpenseController::class);
     Route::get('/latest/car-expenses/{days}' , [CarExpenseController::class , 'lastDays']);
-    Route::get('/filter/car-expenses' , [CarExpenseController::class , 'filterData']);
+    Route::post('/filter/car-expenses' , [CarExpenseController::class , 'filterData']);
 //
 //    });
 //});

@@ -53,7 +53,7 @@ class OtherExpenseController extends Controller
             ]);
         }elseif($request->start_date && !$request->end_date){
             $startDateTime = Carbon::parse($request->start_date)->startOfDay();
-            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+            $endDateTime = Carbon::now()->endOfDay();
 
             // Get the total amount for the specified date range
             $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])

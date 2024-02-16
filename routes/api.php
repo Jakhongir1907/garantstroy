@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\OtherExpenseController;
 use App\Http\Controllers\Api\CarExpenseController;
 use App\Http\Controllers\Api\HouseholdExpenseController;
+use App\Http\Controllers\ImageUploadController;
 
 
 
@@ -92,6 +93,12 @@ Route::get('/get-user' , function (){
     Route::apiResource('household-expenses' , HouseholdExpenseController::class);
     Route::get('/latest/household-expenses/{days}' , [HouseholdExpenseController::class , 'lastDays']);
     Route::post('/filter/household-expenses' , [HouseholdExpenseController::class , 'filterData']);
+//
+// Image Upload and Delete Image
+    Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);
+    Route::post('/image-delete', [ImageUploadController::class, 'imageDelete']);
+//
+
 //});
 //});
 

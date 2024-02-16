@@ -84,7 +84,12 @@ class OtherExpenseController extends Controller
             ]);
         }else{
             $otherExpenses = OtherExpense::orderByDesc('date')->paginate(12);
-            return new OtherExpenseCollection($otherExpenses);
+            $totalAmount = OtherExpense::sum('summa');
+            return response()->json([
+                'message' => "Filtered Other Expenses" ,
+                'totalAmount' => $totalAmount ,
+                'data' => $otherExpenses ,
+            ]);
         }
 
     }

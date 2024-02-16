@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 use App\Http\Controllers\Api\OtherExpenseController;
 use App\Http\Controllers\Api\CarExpenseController;
+use App\Http\Controllers\Api\HouseholdExpenseController;
 
 
 
@@ -87,8 +88,11 @@ Route::get('/get-user' , function (){
     Route::apiResource('car-expenses' , CarExpenseController::class);
     Route::get('/latest/car-expenses/{days}' , [CarExpenseController::class , 'lastDays']);
     Route::post('/filter/car-expenses' , [CarExpenseController::class , 'filterData']);
-//
-//    });
+// Household Expenses
+    Route::apiResource('household-expenses' , HouseholdExpenseController::class);
+    Route::get('/latest/household-expenses/{days}' , [HouseholdExpenseController::class , 'lastDays']);
+    Route::post('/filter/household-expenses' , [HouseholdExpenseController::class , 'filterData']);
+//});
 //});
 
 

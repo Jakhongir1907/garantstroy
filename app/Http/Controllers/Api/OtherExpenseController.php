@@ -37,7 +37,10 @@ class OtherExpenseController extends Controller
 
     public function filterData(Request $request){
 
-        if($request->start_date && $request->end_date){
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        if(!empty($endDate) && !empty($startDate)){
             $startDateTime = Carbon::parse($request->start_date)->startOfDay();
             $endDateTime = Carbon::parse($request->end_date)->endOfDay();
 
@@ -48,10 +51,10 @@ class OtherExpenseController extends Controller
 
             return response()->json([
                 'message' => "Filtered Other Expenses" ,
-                'totalAmount' => $totalAmount ,
+                'total_mount' => $totalAmount ,
                 'data' => $otherExpenses ,
             ]);
-        }elseif($request->start_date && !$request->end_date){
+        }elseif(!empty($startDate) && empty($endDate)){
             $startDateTime = Carbon::parse($request->start_date)->startOfDay();
             $endDateTime = Carbon::now()->endOfDay();
 
@@ -65,7 +68,7 @@ class OtherExpenseController extends Controller
                 'totalAmount' => $totalAmount ,
                 'data' => $otherExpenses ,
             ]);
-        }elseif(!$request->start_date && $request->end_date){
+        }elseif(empty($startDate) && !empty($endDate)){
             $startDateTime = Carbon::parse('2000-01-01')->startOfDay();
             $endDateTime = Carbon::parse($request->end_date)->endOfDay();
 

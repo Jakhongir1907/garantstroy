@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class HiredWorker extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name' , 'image_name' , 'image_url' , 'state'
+        'name' , 'phone_number' , 'comment' , 'project_id'
     ];
 
-    public function hiredWorkers(){
-        return $this->hasMany(HiredWorker::class);
+    public function project(){
+        return $this->belongsTo(Project::class);
     }
 }

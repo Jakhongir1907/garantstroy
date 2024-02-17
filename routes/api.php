@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\HouseholdExpenseController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Api\HouseTradeController;
 use App\Http\Controllers\Api\HouseTradeExpenseController;
+use App\Http\Controllers\Api\ProjectController;
 
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -103,8 +104,11 @@ Route::get('/get-user' , function (){
     Route::get('/trade-expenses/{house_trade_id}' , [HouseTradeExpenseController::class , 'getByHouseTrade']);
 
     //    Route::post('/filter/house-trade-expenses' , [HouseTradeExpenseController::class , 'filterData']);
+//
+// Projects CRUD
+    Route::apiResource('projects' , ProjectController::class);
 
-
+//
 // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);
     Route::post('/image-delete', [ImageUploadController::class, 'imageDelete']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreToolRequest;
+use App\Http\Resources\FilterToolCollection;
 use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowToolResource;
 use App\Http\Resources\ToolCollection;
@@ -26,24 +27,16 @@ class ToolController extends Controller
     public function filterData(Request $request) :JsonResponse
     {
         $tools = Tool::orderByDesc('created_at')->with('project')->paginate(10);
-        $totalAmount = Tool::sum('price');
         $state = $request->state;
         $project_id = $request->project_id;
         if(!empty($state) && empty($project_id)){
             $tools = Tool::where('state' , $state)->orderByDesc('created_at')->with('project')->get();
-            $totalAmount = Tool::where('state' , $state)->sum('price');
         }elseif(empty($state) && !empty($project_id)){
             $tools = Tool::where('project_id' , $project_id)->orderByDesc('created_at')->with('project')->get();
-            $totalAmount = Tool::where('project_id' , $project_id)->sum('price');
         }elseif(!empty($state) && !empty($project_id)){
             $tools = Tool::where('project_id' , $project_id)->where('state' , $state)->orderByDesc('created_at')->with('project')->get();
-            $totalAmount = Tool::where('project_id' , $project_id)->where('state' , $state)->sum('price');
         }
-        return response()->json([
-            'message' => 'Filtered Tools' ,
-            'total_amount' => $totalAmount ,
-            'data' => $tools
-        ]);
+        return new FilterToolCollection($tools);
     }
 
     /**

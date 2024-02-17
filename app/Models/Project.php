@@ -16,4 +16,8 @@ class Project extends Model
     public function hiredWorkers(){
         return $this->hasMany(HiredWorker::class);
     }
+
+    public function tools(){
+        return $this->hasMany(Tool::class);
+    }
 }

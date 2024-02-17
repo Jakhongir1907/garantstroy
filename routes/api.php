@@ -22,7 +22,7 @@ use App\Http\Controllers\Api\HouseTradeExpenseController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\HiredWorkerController;
 use App\Http\Controllers\Api\HiredWorkerExpenseController;
-
+use App\Http\Controllers\Api\ToolController;
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -118,6 +118,9 @@ Route::get('/get-user' , function (){
     Route::apiResource('hired-worker-expenses' ,HiredWorkerExpenseController::class);
     Route::get('/hired-expenses/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'getByWorker']);
 //
+// Tools CRUD
+    Route::apiResource('tools' , ToolController::class);
+    Route::post('/filter/tools' , [ToolController::class , 'filterData']);
 
 // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);

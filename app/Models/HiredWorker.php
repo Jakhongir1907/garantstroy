@@ -16,4 +16,8 @@ class HiredWorker extends Model
     public function project(){
         return $this->belongsTo(Project::class);
     }
+
+    public function expenses(){
+        return $this->hasMany(HiredWorkerExpense::class);
+    }
 }

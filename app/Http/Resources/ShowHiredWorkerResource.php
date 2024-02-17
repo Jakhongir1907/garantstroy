@@ -20,6 +20,7 @@ class ShowHiredWorkerResource extends JsonResource
             'phone_number' => $this->phone_number ,
             'comment' => $this->comment ,
             'project_name' => ($this->project) ? $this->project->name : "",
+            'total_amount' => ($this->expenses) ? $this->expenses->sum('summa') : 0 ,
         ];
     }
 }

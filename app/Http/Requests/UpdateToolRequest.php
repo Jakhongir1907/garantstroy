@@ -26,7 +26,7 @@ class UpdateToolRequest extends FormRequest
             'image_name' => ['required' , 'string'] ,
             'image_url' => ['required' , 'string'] ,
             'price' => ['required' , 'numeric' , 'min:1'] ,
-            'state' =>  ['required' , 'in:active,finished'] ,
+            'state' =>  ['required' , 'in:active,inactive'] ,
             'project_id' => ['required' , 'numeric' , 'min:1' , 'exists:projects,id']
         ];
     }

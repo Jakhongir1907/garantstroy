@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('image_name')->nullable();
             $table->string('image_url')->nullable();
             $table->decimal('price' , 15 , 2)->nullable();
-            $table->enum('state' , ['active' , 'inactive'])->default('active');
+            $table->enum('state' , ['active','inactive'])->default('active');
             $table->unsignedBigInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects');
             $table->timestamps();

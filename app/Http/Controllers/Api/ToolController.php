@@ -25,7 +25,7 @@ class ToolController extends Controller
 
     public function filterData(Request $request) :JsonResponse
     {
-        $tools = Tool::orderByDesc('created_at')->with('project:name')->pluck('name')->paginate(10);
+        $tools = Tool::orderByDesc('created_at')->with('project:name')->pluck('name')->get();
         $totalAmount = Tool::sum('price');
         $state = $request->state;
         $project_id = $request->project_id;

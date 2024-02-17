@@ -25,18 +25,18 @@ class ToolController extends Controller
 
     public function filterData(Request $request) :JsonResponse
     {
-        $tools = Tool::orderByDesc('created_at')->with('project:name')->pluck('name')->get();
+        $tools = Tool::orderByDesc('created_at')->with('project.name')->paginate(10);
         $totalAmount = Tool::sum('price');
         $state = $request->state;
         $project_id = $request->project_id;
         if(!empty($state) && empty($project_id)){
-            $tools = Tool::where('state' , $state)->orderByDesc('created_at')->with('project:name')->pluck('name')->get();
+            $tools = Tool::where('state' , $state)->orderByDesc('created_at')->with('project.name')->get();
             $totalAmount = Tool::where('state' , $state)->sum('price');
         }elseif(empty($state) && !empty($project_id)){
-            $tools = Tool::where('project_id' , $project_id)->orderByDesc('created_at')->with('project:name')->pluck('name')->get();
+            $tools = Tool::where('project_id' , $project_id)->orderByDesc('created_at')->with('project.name')->get();
             $totalAmount = Tool::where('project_id' , $project_id)->sum('price');
         }elseif(!empty($state) && !empty($project_id)){
-            $tools = Tool::where('project_id' , $project_id)->where('state' , $state)->orderByDesc('created_at')->with('project:name')->pluck('name')->get();
+            $tools = Tool::where('project_id' , $project_id)->where('state' , $state)->orderByDesc('created_at')->with('project.name')->get();
             $totalAmount = Tool::where('project_id' , $project_id)->where('state' , $state)->sum('price');
         }
         return response()->json([

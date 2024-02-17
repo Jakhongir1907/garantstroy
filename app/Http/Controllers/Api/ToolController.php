@@ -24,7 +24,7 @@ class ToolController extends Controller
         return new ToolCollection($tools);
     }
 
-    public function filterData(Request $request) :JsonResponse
+    public function filterData(Request $request)
     {
         $tools = Tool::orderByDesc('created_at')->with('project')->paginate(10);
         $state = $request->state;

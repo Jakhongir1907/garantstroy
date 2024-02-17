@@ -20,6 +20,7 @@ use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Api\HouseTradeController;
 use App\Http\Controllers\Api\HouseTradeExpenseController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\HiredWorkerController;
 
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -108,6 +109,9 @@ Route::get('/get-user' , function (){
 // Projects CRUD
     Route::apiResource('projects' , ProjectController::class);
 
+//
+// Hired Workers CRUD
+    Route::apiResource('hired-workers' , HiredWorkerController::class);
 //
 // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);

@@ -109,7 +109,7 @@ Route::get('/get-user' , function (){
 //
 // Projects CRUD
     Route::apiResource('projects' , ProjectController::class);
-
+    Route::get('/all-projects' , [ProjectController::class , 'allData']);
 //
 // Hired Workers CRUD
     Route::apiResource('hired-workers' , HiredWorkerController::class);

@@ -22,6 +22,14 @@ class ProjectController extends Controller
         return new ProjectCollection($projects);
     }
 
+    public function allData(){
+        $projects = Project::select('id' , 'name')->get();
+
+        return response()->json([
+            'data' => $projects
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

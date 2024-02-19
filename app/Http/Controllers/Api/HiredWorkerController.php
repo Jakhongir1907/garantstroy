@@ -9,6 +9,7 @@ use App\Http\Resources\HiredWorkerCollection;
 use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowHiredWorkerResource;
 use App\Models\HiredWorker;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class HiredWorkerController extends Controller
@@ -26,8 +27,9 @@ class HiredWorkerController extends Controller
     {
         $hiredWorkers = HiredWorker::orderByDesc('created_at')->paginate(10);
         $project_id = $request->project_id;
-        if(!empty($project_id)){
-            $hiredWorkers = HiredWorker::where('project_id' , $project_id)->orderByDesc('created_at')->get();
+        $project = Project::find($project_id);
+        if($project){
+            $hiredWorkers = HiredWorker::where('project_id' , $project->id)->orderByDesc('created_at')->get();
         }
         return new HiredWorkerCollection($hiredWorkers);
     }

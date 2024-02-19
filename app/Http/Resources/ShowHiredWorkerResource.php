@@ -15,11 +15,11 @@ class ShowHiredWorkerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => $this->id ,
             'name' => $this->name ,
             'phone_number' => $this->phone_number ,
             'comment' => $this->comment ,
-            'project_name' => ($this->project) ? $this->project->name : "",
+            'project_id' => $this->project_id ,
             'total_amount' => ($this->expenses) ? $this->expenses->sum('summa') : 0 ,
         ];
     }

@@ -113,6 +113,7 @@ Route::get('/get-user' , function (){
 //
 // Hired Workers CRUD
     Route::apiResource('hired-workers' , HiredWorkerController::class);
+    Route::get('/filter/hired-workers' , [HiredWorkerController::class , 'filterData']);
 //
 // Hired Worker Expenses
     Route::apiResource('hired-worker-expenses' ,HiredWorkerExpenseController::class);

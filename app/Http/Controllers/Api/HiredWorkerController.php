@@ -22,7 +22,15 @@ class HiredWorkerController extends Controller
 
         return new HiredWorkerCollection($hiredWorkers);
     }
-
+    public function filterData(Request $request)
+    {
+        $hiredWorkers = HiredWorker::orderByDesc('created_at')->paginate(10);
+        $project_id = $request->project_id;
+        if(!empty($project_id)){
+            $hiredWorkers = HiredWorker::where('project_id' , $project_id)->orderByDesc('created_at')->get();
+        }
+        return new HiredWorkerCollection($hiredWorkers);
+    }
     /**
      * Store a newly created resource in storage.
      */

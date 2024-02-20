@@ -41,7 +41,13 @@ class ContractFloorController extends Controller
      */
     public function store(StoreContractFloorRequest $request)
     {
-        return new ShowContractFloorResource(ContractFloor::create($request->all()));
+        return new ShowContractFloorResource(ContractFloor::create([
+            'price' => $request->price ,
+            'floor' => $request->floor ,
+            'square' => $request->square ,
+            'amount' => $request->price * $request->square ,
+            'contract_id' => $request->contract_id ,
+        ]));
     }
 
     /**
@@ -77,6 +83,7 @@ class ContractFloorController extends Controller
             'price' => $request->price ,
             'floor' => $request->floor ,
             'square' => $request->square ,
+            'amount' => $request->price * $request->square ,
             'contract_id' => $request->contract_id ,
         ]);
 

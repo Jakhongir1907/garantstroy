@@ -20,6 +20,7 @@ class ShowContractFloorResource extends JsonResource
             'price' => $this->price ,
             'square' => $this->square ,
             'floor' => $this->floor ,
+            'amount' => $this->amount ,
         ];
     }
 }

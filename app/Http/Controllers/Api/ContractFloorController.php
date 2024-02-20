@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreContractFloorRequest;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractFloorRequest;
 use App\Http\Resources\ContractFloorCollection;
@@ -38,7 +39,7 @@ class ContractFloorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContractRequest $request)
+    public function store(StoreContractFloorRequest $request)
     {
         return new ShowContractFloorResource(ContractFloor::create($request->all()));
     }

@@ -10,7 +10,7 @@ class ContractFloor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'floor' , 'price' , 'square' , 'contract_id'
+        'floor' , 'price' , 'square' , 'contract_id' , 'amount'
     ];
 
     public function contract(){

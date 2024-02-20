@@ -15,6 +15,7 @@ class ShowContractFloorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id ,
             'contract_id' => $this->contract_id ,
             'contract_name' => ($this->contract) ? $this->contract->block : '',
             'price' => $this->price ,

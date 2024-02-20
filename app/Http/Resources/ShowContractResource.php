@@ -20,7 +20,7 @@ class ShowContractResource extends JsonResource
             'project_name' => ($this->project) ? $this->project->name :"" ,
             'block' => $this->block ,
             'currency' => $this->currency ,
-            'total_amount' => ($this->floors) ? $this->floors->sum('price') : 0 ,
+            'total_amount' => ($this->floors) ? $this->floors->sum('price'*'square') : 0 ,
         ];
     }
 }

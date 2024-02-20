@@ -8,6 +8,7 @@ use App\Http\Resources\ContrctCollection;
 use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowContractResource;
 use App\Models\Contract;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller

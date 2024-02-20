@@ -17,7 +17,7 @@ class ShowContractResource extends JsonResource
         return [
             'id' => $this->id,
             'project_id' => $this->project_id ,
-            'project_name' => ($this->project_name) ? $this->project_name :"" ,
+            'project_name' => ($this->project) ? $this->project->name :"" ,
             'block' => $this->block ,
             'currency' => $this->currency ,
             'total_amount' => ($this->floors) ? $this->floors->sum('price') : 0 ,

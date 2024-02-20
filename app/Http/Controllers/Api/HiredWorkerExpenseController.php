@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHireWorkerExpenseRequest;
+use App\Http\Requests\UpdateHiredWorkerExpenseRequest;
 use App\Http\Resources\HiredWorkerExpenseCollection;
 use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowHiredWorkerExpenseResource;
@@ -72,7 +73,7 @@ class HiredWorkerExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateHiredWorkerExpenseRequest $request, string $id)
     {
         $expense = HiredWorkerExpense::find($id);
         if(!$expense){

@@ -22,7 +22,10 @@ class UpdateHiredWorkerExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'summa' => ['required' , 'numeric']  ,
+            'date' => ['required' , 'date']  ,
+            'comment' => ['string']  ,
+            'hired_worker_id' => ['required' , 'numeric' , 'min:1' , 'exists:hired_workers,id'] ,
         ];
     }
 }

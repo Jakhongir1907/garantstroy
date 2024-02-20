@@ -123,7 +123,7 @@ Route::get('/get-user' , function (){
 //
 // Contract Floors
 Route::apiResource('floors' , ContractFloorController::class);
-Route::post('/contract-floors/{contract_id}' , [ContractFloorController::class , 'filterData']);
+Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 'filterData']);
 //
 // Hired Worker Expenses
     Route::apiResource('hired-worker-expenses' ,HiredWorkerExpenseController::class);

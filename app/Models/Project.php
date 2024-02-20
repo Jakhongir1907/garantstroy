@@ -20,4 +20,8 @@ class Project extends Model
     public function tools(){
         return $this->hasMany(Tool::class);
     }
+
+    public function contracts(){
+        return$this->hasMany(Contract::class);
+    }
 }

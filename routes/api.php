@@ -23,6 +23,8 @@ use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\HiredWorkerController;
 use App\Http\Controllers\Api\HiredWorkerExpenseController;
 use App\Http\Controllers\Api\ToolController;
+use App\Http\Controllers\Api\ContractController;
+use App\Http\Controllers\Api\ContractFloorController;
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -114,6 +116,14 @@ Route::get('/get-user' , function (){
 // Hired Workers CRUD
     Route::apiResource('hired-workers' , HiredWorkerController::class);
     Route::post('/filter/hired-workers' , [HiredWorkerController::class , 'filterData']);
+//
+// CONTRACTS CRUD
+    Route::apiResource('contracts' , ContractController::class);
+    Route::post('/filter/contracts' , [ContractController::class , 'filterData']);
+//
+// Contract Floors
+Route::apiResource('floors' , ContractFloorController::class);
+Route::post('/contract-floors/{contract_id}' , [ContractFloorController::class , 'filterData']);
 //
 // Hired Worker Expenses
     Route::apiResource('hired-worker-expenses' ,HiredWorkerExpenseController::class);

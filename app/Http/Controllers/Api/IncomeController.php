@@ -34,10 +34,10 @@ class IncomeController extends Controller
                 $query->where('project_id', $projectId);
             })
                 ->when($startDate, function ($query) use ($startDate) {
-                    $query->where('date_column', '>=', $startDate);
+                    $query->where('date', '>=', $startDate);
                 })
                 ->when($endDate, function ($query) use ($endDate) {
-                    $query->where('date_column', '<=', $endDate);
+                    $query->where('date', '<=', $endDate);
                 })
                 ->get();
         }

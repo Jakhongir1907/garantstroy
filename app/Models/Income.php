@@ -17,17 +17,4 @@ class Income extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function filterByDate($query , $projectId , $startDate , $endDate){
-        if($projectId) {
-            $query->orderByDesc('date')->where('project_id', $projectId);
-        }
-        if($startDate) {
-            $query->orderByDesc('date')->whereDate('date', '>=', $startDate);
-        }
-        if($endDate) {
-            $query->orderByDesc('date')->whereDate('date', '<=', $endDate);
-        }
-        return $query->get();
-    }
-
 }

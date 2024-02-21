@@ -25,6 +25,9 @@ use App\Http\Controllers\Api\HiredWorkerExpenseController;
 use App\Http\Controllers\Api\ToolController;
 use App\Http\Controllers\Api\ContractController;
 use App\Http\Controllers\Api\ContractFloorController;
+use App\Http\Controllers\Api\IncomeController;
+
+
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -132,6 +135,9 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
 // Tools CRUD
     Route::apiResource('tools' , ToolController::class);
     Route::post('/filter/tools' , [ToolController::class , 'filterData']);
+// Incomes CRUD
+    Route::apiResource('incomes' , IncomeController::class);
+    Route::post('/filter/incomes' , [IncomeController::class , 'filterData']);
 
 // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);

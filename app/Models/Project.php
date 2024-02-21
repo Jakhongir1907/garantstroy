@@ -24,4 +24,8 @@ class Project extends Model
     public function contracts(){
         return$this->hasMany(Contract::class);
     }
+
+    public function incomes(){
+        return $this->hasMany(Income::class);
+    }
 }

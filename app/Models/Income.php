@@ -10,7 +10,7 @@ class Income extends Model
     use HasFactory;
 
     protected $fillable = [
-        'project_id', 'summa' , 'comment' , 'income_type' , 'date' , 'currency' , 'currency_rate'
+        'project_id', 'summa' , 'amount' , 'comment' , 'income_type' , 'date' , 'currency' , 'currency_rate'
     ];
 
     public function project(){

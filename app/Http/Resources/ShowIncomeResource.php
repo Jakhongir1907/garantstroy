@@ -19,6 +19,7 @@ class ShowIncomeResource extends JsonResource
             'project_id' => $this->project_id ,
             'project_name' => ($this->project) ? $this->project->name : '' ,
             'summa' => $this->summa ,
+            'amount' => $this->amount ,
             'date' => $this->date ,
             'income_type' => $this->income_type ,
             'currency' => $this->currency ,

@@ -54,7 +54,8 @@ class IncomeController extends Controller
     {
         return new ShowIncomeResource(Income::create([
             'project_id' => $request->project_id ,
-            'summa' => $request->summa * $request->currency_rate,
+            'summa' => $request->summa,
+            'amount' => $request->summa * $request->currency_rate,
             'comment' => $request->comment ,
             'date' => $request->date ,
             'income_type' => $request->income_type ,
@@ -94,7 +95,8 @@ class IncomeController extends Controller
 
         $income->update([
             'project_id' => $request->project_id ,
-            'summa' => $request->summa * $request->currency_rate,
+            'summa' => $request->summa ,
+            'amount' => $request->summa * $request->currency_rate,
             'comment' => $request->comment ,
             'date' => $request->date ,
             'income_type' => $request->income_type ,

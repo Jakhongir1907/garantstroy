@@ -21,7 +21,7 @@ class ShowToolResource extends JsonResource
             'image_name' => $this->image_name ,
             'image_url' => $this->image_url ,
             'state' => $this->state ,
-            'project_name' => ($this->project) ? $this->project->name : "" ,
+            'project_id' => $this->project_id ,
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreIncomeRequest;
+use App\Http\Resources\FilterIncomeCollection;
 use App\Http\Resources\IncomeCollection;
 use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowIncomeResource;
@@ -42,7 +43,7 @@ class IncomeController extends Controller
                 ->get();
         }
 
-        return new IncomeCollection($incomes);
+        return new FilterIncomeCollection($incomes);
     }
 
 

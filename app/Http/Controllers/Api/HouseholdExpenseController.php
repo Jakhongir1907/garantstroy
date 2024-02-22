@@ -30,7 +30,7 @@ class HouseholdExpenseController extends Controller
 
         return response()->json([
             'message' => "Household Expenses , Last 30 days " ,
-            'total_amount' => $totalAmount ,
+            'totalAmount' => $totalAmount ,
             'data' => $householdExpenses ,
         ]);
     }
@@ -86,7 +86,7 @@ class HouseholdExpenseController extends Controller
             $totalAmount = HouseholdExpense::sum('summa');
             return response()->json([
                 'message' => "All Household Expenses" ,
-                'totalAamount' => $totalAmount ,
+                'totalAmount' => $totalAmount ,
                 'data' => $householdExpenses ,
             ]);
         }

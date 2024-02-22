@@ -86,10 +86,10 @@ Route::get('/get-user' , function (){
 //    ->middleware(['auth', 'throttle:6,1'])
 //    ->name('verification.send');
 
-//Route::middleware(['auth:sanctum'])->group(function (){
-//
-//    Route::middleware(['admin'])->group(function (){
-    // Other Expenses
+Route::middleware(['auth:sanctum'])->group(function (){
+
+    Route::middleware(['admin'])->group(function (){
+//     Other Expenses
     Route::apiResource('other-expenses' , OtherExpenseController::class);
     Route::get('/latest/other-expenses/{days}' , [OtherExpenseController::class , 'lastDays']);
     Route::post('/filter/other-expenses' , [OtherExpenseController::class , 'filterData']);
@@ -144,8 +144,8 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
     Route::post('/image-delete', [ImageUploadController::class, 'imageDelete']);
 //
 
-//});
-//});
+});
+});
 
 
 

@@ -67,7 +67,7 @@ class CarExpenseController extends Controller
 
             return response()->json([
                 'message' => "Filtered Other Expenses" ,
-                'total_mount' => $totalAmount ,
+                'totalAmount' => $totalAmount ,
                 'data' => $carExpenses ,
             ]);
         }elseif(!empty($startDate) && empty($endDate)){

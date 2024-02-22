@@ -27,7 +27,6 @@ class IncomeController extends Controller
         $projectId = $request->project_id;
         $startDate = $request->start_date;
         $endDate = $request->end_date;
-
         if(empty($projectId) && empty($startDate) && empty($endDate)){
             $incomes = Income::orderByDesc('date')->paginate(10);
         }else{
@@ -45,8 +44,6 @@ class IncomeController extends Controller
 
         return new FilterIncomeCollection($incomes);
     }
-
-
 
     /**
      * Store a newly created resource in storage.

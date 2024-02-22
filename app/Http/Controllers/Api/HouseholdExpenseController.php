@@ -50,7 +50,7 @@ class HouseholdExpenseController extends Controller
 
             return response()->json([
                 'message' => "Filtered Household Expenses" ,
-                'total_mount' => $totalAmount ,
+                'totalAmount' => $totalAmount ,
                 'data' => $householdExpenses ,
             ]);
         }elseif(!empty($startDate) && empty($endDate)){
@@ -64,7 +64,7 @@ class HouseholdExpenseController extends Controller
 
             return response()->json([
                 'message' => "Filtered Household Expenses" ,
-                'total_mount' => $totalAmount ,
+                'totalAmount' => $totalAmount ,
                 'data' => $householdExpenses ,
             ]);
         }elseif(empty($startDate) && !empty($endDate)){
@@ -78,7 +78,7 @@ class HouseholdExpenseController extends Controller
 
             return response()->json([
                 'message' => "Filtered Household Expenses" ,
-                'total_mount' => $totalAmount ,
+                'totalAmount' => $totalAmount ,
                 'data' => $householdExpenses ,
             ]);
         }else{
@@ -86,7 +86,7 @@ class HouseholdExpenseController extends Controller
             $totalAmount = HouseholdExpense::sum('summa');
             return response()->json([
                 'message' => "All Household Expenses" ,
-                'total_mount' => $totalAmount ,
+                'totalAamount' => $totalAmount ,
                 'data' => $householdExpenses ,
             ]);
         }

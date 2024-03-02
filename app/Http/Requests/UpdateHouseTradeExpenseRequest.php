@@ -26,6 +26,8 @@ class UpdateHouseTradeExpenseRequest extends FormRequest
             'date' => ['required' , 'date']  ,
             'comment' => ['string']  ,
             'house_trade_id' => ['required' , 'numeric' , 'min:1' , 'exists:house_trades,id'] ,
+            'currency' => ['required' , 'in:sum,dollar'] ,
+            'currency_rate'  => ['required' ,'numeric' , 'min:1'] ,
         ];
     }
 }

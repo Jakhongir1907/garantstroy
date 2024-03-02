@@ -48,6 +48,9 @@ class HouseTradeExpenseController extends Controller
             'summa' => $request->summa ,
             'date' => $request->date ,
             'comment' => $request->comment ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
             'house_trade_id' => $request->house_trade_id ,
         ]);
 
@@ -87,11 +90,13 @@ class HouseTradeExpenseController extends Controller
                 'message' => 'Record not found!'
             ] , 404);
         }
-
         $houseTradeExpense->update([
             'summa' => $request->summa ,
             'date' => $request->date ,
             'comment' => $request->comment ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
             'house_trade_id' => $request->house_trade_id ,
         ]);
 

@@ -18,6 +18,9 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->unsignedBigInteger('hired_worker_id')->nullable();
             $table->foreign('hired_worker_id')->references('id')->on('hired_workers');
+            $table->enum('currency' , ['dollar' , 'sum'])->default('sum');
+            $table->double('currency_rate')->default(1);
+            $table->decimal('amount' , 15 ,2)->default(0);
             $table->timestamps();
         });
     }

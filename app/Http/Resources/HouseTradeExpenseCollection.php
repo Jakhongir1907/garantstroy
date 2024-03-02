@@ -16,7 +16,7 @@ class HouseTradeExpenseCollection extends ResourceCollection
     {
         return [
             'message' => "All House Trade Expenses List" ,
-            'total_amount' => $this->collection->sum('summa') ,
+            'total_amount' => $this->collection->sum('amount') ,
             'data' => $this->collection->map(function ($houseTradeExpense){
                 return new ShowTradeHouseExpenseResource($houseTradeExpense);
             }) ,

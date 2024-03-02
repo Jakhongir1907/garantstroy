@@ -17,7 +17,7 @@ class CarExpenseCollection extends ResourceCollection
     {
         return [
             'message' => "All Car Expenses List" ,
-            'total_amount' => CarExpense::sum('summa') ,
+            'total_amount' => CarExpense::sum('amount') ,
             'data' => $this->collection->map(function ($carExpense){
                 return new ShowCarExpenseResource($carExpense);
             }) ,

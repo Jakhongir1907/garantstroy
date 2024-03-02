@@ -84,7 +84,7 @@ class OtherExpenseController extends Controller
             ]);
         }else{
             $otherExpenses = OtherExpense::orderByDesc('date')->paginate(12);
-            $totalAmount = OtherExpense::sum('summa');
+            $totalAmount = OtherExpense::sum('amount');
             return response()->json([
                 'message' => "Filtered Other Expenses" ,
                 'totalAmount' => $totalAmount ,

@@ -19,6 +19,9 @@ class ShowCarExpenseResource extends JsonResource
             'summa' => $this->summa ,
             'date' => $this->date ,
             'comment' => $this->comment ,
+            'currency' => $this->currency ,
+            'currency_rate' => $this->currency_rate ,
+            'amount' => $this->amount ,
         ];
     }
 }

@@ -62,7 +62,7 @@ class CarExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $carExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -76,7 +76,7 @@ class CarExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $carExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -90,7 +90,7 @@ class CarExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $carExpenses = CarExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -100,7 +100,7 @@ class CarExpenseController extends Controller
             ]);
         }else{
             $carExpenses = CarExpense::orderByDesc('date')->paginate(12);
-            $totalAmount = CarExpense::sum('summa');
+            $totalAmount = CarExpense::sum('amount');
             return response()->json([
                 'message' => "Filtered Other Expenses" ,
                 'totalAmount' => $totalAmount ,
@@ -114,7 +114,14 @@ class CarExpenseController extends Controller
      */
     public function store(StoreCarExpenseRequest $request)
     {
-        return new ShowCarExpenseResource(CarExpense::create($request->all()));
+        return new ShowCarExpenseResource(CarExpense::create([
+            'summa' => $request->summa ,
+            'date' => $request->date ,
+            'comment' => $request->comment ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
+        ]));
     }
 
     /**
@@ -151,6 +158,9 @@ class CarExpenseController extends Controller
             'summa' => $request->summa ,
             'date' => $request->date ,
             'comment' => $request->comment ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
         ]);
 
         return new ShowCarExpenseResource($carExpense);

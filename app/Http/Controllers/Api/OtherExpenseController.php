@@ -26,7 +26,7 @@ class OtherExpenseController extends Controller
         $startDate = Carbon::now()->subDays($days)->toDateString();
         $otherExpenses = OtherExpense::where('date', '>=', $startDate)
             ->orderByDesc('date')->get();
-        $totalAmount =  OtherExpense::where('date', '>=', $startDate)->sum('summa');
+        $totalAmount =  OtherExpense::where('date', '>=', $startDate)->sum('amount');
 
         return response()->json([
             'message' => "Other Expenses , Last 30 days " ,
@@ -46,7 +46,7 @@ class OtherExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -60,7 +60,7 @@ class OtherExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -74,7 +74,7 @@ class OtherExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $otherExpenses = OtherExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([

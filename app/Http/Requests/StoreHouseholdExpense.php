@@ -25,6 +25,8 @@ class StoreHouseholdExpense extends FormRequest
             'summa' => ['required' , 'numeric']  ,
             'date' => ['required' , 'date']  ,
             'comment' => ['string']  ,
+            'currency' => ['required' , 'in:sum,dollar'] ,
+            'currency_rate'  => ['required' ,'numeric' , 'min:1'] ,
         ];
     }
 }

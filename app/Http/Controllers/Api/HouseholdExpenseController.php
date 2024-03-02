@@ -26,7 +26,7 @@ class HouseholdExpenseController extends Controller
         $startDate = Carbon::now()->subDays($days)->toDateString();
         $householdExpenses = HouseholdExpense::where('date', '>=', $startDate)
             ->orderByDesc('date')->get();
-        $totalAmount =  HouseholdExpense::where('date', '>=', $startDate)->sum('summa');
+        $totalAmount =  HouseholdExpense::where('date', '>=', $startDate)->sum('amount');
 
         return response()->json([
             'message' => "Household Expenses , Last 30 days " ,
@@ -45,7 +45,7 @@ class HouseholdExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = HouseholdExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $householdExpenses = HouseholdExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -59,7 +59,7 @@ class HouseholdExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = HouseholdExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $householdExpenses = HouseholdExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -73,7 +73,7 @@ class HouseholdExpenseController extends Controller
 
             // Get the total amount for the specified date range
             $totalAmount = HouseholdExpense::whereBetween('date', [$startDateTime, $endDateTime])
-                ->sum('summa');
+                ->sum('amount');
             $householdExpenses = HouseholdExpense::whereBetween('date', [$startDateTime, $endDateTime])->paginate(12);
 
             return response()->json([
@@ -83,7 +83,7 @@ class HouseholdExpenseController extends Controller
             ]);
         }else{
             $householdExpenses = HouseholdExpense::orderByDesc('date')->paginate(12);
-            $totalAmount = HouseholdExpense::sum('summa');
+            $totalAmount = HouseholdExpense::sum('amount');
             return response()->json([
                 'message' => "All Household Expenses" ,
                 'totalAmount' => $totalAmount ,
@@ -101,7 +101,14 @@ class HouseholdExpenseController extends Controller
      */
     public function store(StoreHouseholdExpense $request)
     {
-        return new ShowHouseholdExpenseResource(HouseholdExpense::create($request->all()));
+        return new ShowHouseholdExpenseResource(HouseholdExpense::create([
+            'summa' => $request->summa ,
+            'date' => $request->date ,
+            'comment' => $request->comment ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
+        ]));
     }
 
     /**
@@ -138,9 +145,12 @@ class HouseholdExpenseController extends Controller
         }
 
         $householdExpense->update([
-           'summa' => $request->summa ,
-           'date' => $request->date ,
-           'comment' => $request->comment
+            'summa' => $request->summa ,
+            'date' => $request->date ,
+            'comment' => $request->comment ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
         ]);
         return new ShowHouseholdExpenseResource($householdExpense);
     }

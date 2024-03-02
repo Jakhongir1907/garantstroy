@@ -21,7 +21,7 @@ class ShowHiredWorkerResource extends JsonResource
             'comment' => $this->comment ,
             'project_id' => $this->project_id ,
             'project_name' => ($this->project) ? $this->project->name : "",
-            'total_amount' => ($this->expenses) ? $this->expenses->sum('summa') : 0 ,
+            'total_amount' => ($this->expenses) ? $this->expenses->sum('amount') : 0 ,
         ];
     }
 }

@@ -20,7 +20,7 @@ class ShowHouseTradeResource extends JsonResource
             'image_name' => $this->image_name ,
             'image_url' => $this->image_url ,
             'address' => $this->address ,
-            'total_amount' => $this->houseTradeExpenses->sum('summa')
+            'total_amount' => $this->houseTradeExpenses->sum('amount')
         ];
     }
 }

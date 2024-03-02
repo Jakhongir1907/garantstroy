@@ -26,6 +26,8 @@ class UpdateHiredWorkerExpenseRequest extends FormRequest
             'date' => ['required' , 'date']  ,
             'comment' => ['string']  ,
             'hired_worker_id' => ['required' , 'numeric' , 'min:1' , 'exists:hired_workers,id'] ,
+            'currency' => ['required' , 'in:sum,dollar'] ,
+            'currency_rate'  => ['required' ,'numeric' , 'min:1'] ,
         ];
     }
 }

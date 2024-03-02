@@ -19,6 +19,9 @@ class ShowHiredWorkerExpenseResource extends JsonResource
             'summa' => $this->summa ,
             'comment' => $this->comment ,
             'date' => $this->date ,
+            'currency' => $this->currency ,
+            'currency_rate' => $this->currency_rate ,
+            'amount' => $this->amount ,
         ];
     }
 }

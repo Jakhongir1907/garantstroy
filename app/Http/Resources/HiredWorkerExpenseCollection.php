@@ -16,7 +16,7 @@ class HiredWorkerExpenseCollection extends ResourceCollection
     {
         return [
             'message' => "All Hired Worker Expenses List" ,
-            'total_amount' => $this->collection->sum('summa'),
+            'total_amount' => $this->collection->sum('amount'),
             'data' => $this->collection->map(function ($hiredWorkerExpense){
                 return new ShowHiredWorkerExpenseResource($hiredWorkerExpense);
             }) ,

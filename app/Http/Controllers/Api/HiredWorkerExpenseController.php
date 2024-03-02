@@ -19,7 +19,7 @@ class HiredWorkerExpenseController extends Controller
      */
     public function index()
     {
-        $totalAmount = HiredWorkerExpense::sum('summa');
+        $totalAmount = HiredWorkerExpense::sum('amount');
         return response()->json([
             'message' => 'Yollanma ishchilarga berilgan umumiy pul mablag\'lari. ',
             'total_amount' => $totalAmount
@@ -49,6 +49,9 @@ class HiredWorkerExpenseController extends Controller
             'date' => $request->date ,
             'comment' => $request->comment ,
             'hired_worker_id' => $request->hired_worker_id ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
         ]);
 
         return new ShowHiredWorkerExpenseResource($expense);
@@ -88,6 +91,9 @@ class HiredWorkerExpenseController extends Controller
             'date' => $request->date ,
             'comment' => $request->comment ,
             'hired_worker_id' => $request->hired_worker_id ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
         ]);
         return new ShowHiredWorkerExpenseResource($expense);
     }

@@ -9,7 +9,7 @@ class HiredWorkerExpense extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'summa' , 'date' , 'comment' , 'hired_worker_id'
+        'summa' , 'date' , 'comment' , 'hired_worker_id' , 'amount' ,'currency' , 'currency_rate'
     ];
 
     public function hiredWorker(){

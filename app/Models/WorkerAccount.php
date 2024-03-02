@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CarExpense extends Model
+class WorkerAccount extends Model
 {
     use HasFactory;
-    protected $fillable = ['summa' , 'date' , 'comment', 'amount' ,'currency' , 'currency_rate'];
 }

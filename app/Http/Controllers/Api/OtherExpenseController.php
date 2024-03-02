@@ -103,7 +103,14 @@ class OtherExpenseController extends Controller
      */
     public function store(StoreOtherExpenseRequest $request)
     {
-        return new ShowOtherExpenseResource(OtherExpense::create($request->all()));
+        return new ShowOtherExpenseResource(OtherExpense::create([
+            'summa' => $request->summa ,
+            'date' => $request->date ,
+            'comment' => $request->comment ,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
+        ]));
 
     }
 
@@ -145,7 +152,10 @@ class OtherExpenseController extends Controller
         $otherExpense->update([
             'summa' => $request->summa ,
             'date' => $request->date ,
-            'comment' => $request->comment
+            'comment' => $request->comment,
+            'currency' => $request->currency ,
+            'currency_rate' => $request->currency_rate ,
+            'amount' => $request->summa * $request->currency_rate,
         ]);
 
         return new ShowOtherExpenseResource($otherExpense);

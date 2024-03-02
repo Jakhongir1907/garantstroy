@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class HouseholdExpense extends Model
 {
     use HasFactory;
-    protected $fillable = ['summa' , 'date' , 'comment'];
+    protected $fillable = ['summa' , 'date' , 'comment' , 'amount' ,'currency' , 'currency_rate'];
 }

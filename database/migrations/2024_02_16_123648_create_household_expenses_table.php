@@ -16,6 +16,9 @@ return new class extends Migration
             $table->decimal('summa' , 15 , 2)->nullable();
             $table->date('date')->nullable();
             $table->text('comment')->nullable();
+            $table->enum('currency' , ['dollar' , 'sum'])->default('sum');
+            $table->double('currency_rate')->default(1);
+            $table->decimal('amount' , 15 ,2)->default(0);
             $table->timestamps();
         });
     }

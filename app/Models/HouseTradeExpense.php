@@ -10,7 +10,7 @@ class HouseTradeExpense extends Model
     use HasFactory;
 
     protected $fillable = [
-        'summa' , 'date' , 'comment' , 'house_trade_id'
+        'summa' , 'date' , 'comment' , 'house_trade_id' , 'amount' ,'currency' , 'currency_rate'
     ];
 
     public function houseTrade(){

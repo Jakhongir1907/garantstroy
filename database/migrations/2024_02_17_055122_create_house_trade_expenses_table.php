@@ -18,6 +18,9 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->unsignedBigInteger('house_trade_id')->nullable();
             $table->foreign('house_trade_id')->references('id')->on('house_trades');
+            $table->enum('currency' , ['dollar' , 'sum'])->default('sum');
+            $table->double('currency_rate')->default(1);
+            $table->decimal('amount' , 15 ,2)->default(0);
             $table->timestamps();
         });
     }

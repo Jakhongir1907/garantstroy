@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('name' , 50)->nullable();
             $table->string('phone_number' , 15)->nullable();
             $table->decimal('salary_rate')->default(0);
-            $table->enum('position' , ['brigadier' , ''])->default('');
+            $table->enum('position' , ['brigadier' ,'master','fitter', 'form_worker' , 'worker'])->default('worker');
+            $table->unsignedBigInteger('project_id')->nullable();
+            $table->foreign('project_id')->references('id')->on('projects');
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }

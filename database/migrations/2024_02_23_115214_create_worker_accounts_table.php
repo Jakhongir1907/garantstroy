@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('worker_accounts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('worker_id')->nullable();
+            $table->foreign('worker_id')->references('id')->on('workers');
+            $table->date('started_date')->nullable();
+            $table->date('finished_date')->nullable();
             $table->timestamps();
         });
     }

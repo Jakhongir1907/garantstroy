@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class DayOff extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'quantity' ,'date' , 'worker_id'
+    ];
+
+    public function worker(){
+        return $this->belongsTo(Worker::class);
+    }
 }

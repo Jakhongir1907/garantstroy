@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class WorkerAccount extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'worker_id' , 'started_date' , 'finished_date'
+    ];
+
+    public function worker(){
+        return $this->belongsTo(Worker::class);
+    }
 }

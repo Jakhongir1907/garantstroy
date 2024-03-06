@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('day_offs', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->date('date');
+            $table->double('quantity')->default(0);
+            $table->unsignedBigInteger('worker_id');
+            $table->foreign('worker_id')->references('id')->on('workers');
         });
     }
 

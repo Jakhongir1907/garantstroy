@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->double('quantity')->default(0);
-            $table->unsignedBigInteger('worker_id');
-            $table->foreign('worker_id')->references('id')->on('workers');
+            $table->unsignedBigInteger('worker_account_id');
+            //$table->foreign('work_account_id')->references('id')->on('worker_accounts');
         });
     }
 

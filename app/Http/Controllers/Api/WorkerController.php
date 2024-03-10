@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWorkerRequest;
 use App\Http\Requests\UpdateWorkerRequest;
 use App\Http\Resources\ReturnResponseResource;
+use App\Http\Resources\ShowWorkerAccountResource;
 use App\Http\Resources\ShowWorkerResource;
+use App\Http\Resources\WorkerAccountCollection;
 use App\Http\Resources\WorkerCollection;
 use App\Models\Worker;
 use App\Models\WorkerAccount;
@@ -20,6 +22,21 @@ class WorkerController extends Controller
     public function index()
     {
 
+    }
+
+    public function salary(Request $request){
+        $workers = $request->workers;
+        $started_date = $request->started_date;
+        $finished_date = $request->finished_date;
+        $workerAccounts = WorkerAccount::when($workers, function ($query) use ($workers){
+            $query->whereIn('worker_id',$workers);
+        })->when($started_date, function ($query) use ($started_date){
+            $query->where('started_date','<=',$started_date);
+        })/*->when($finished_date, function ($query) use ($finished_date){
+            $query->where('finished_date', '>=',$finished_date);
+        })*/
+        ->get();
+        return new WorkerAccountCollection($workerAccounts);
     }
 
     public function filterData(Request $request){
@@ -66,7 +83,8 @@ class WorkerController extends Controller
      */
     public function show(string $id)
     {
-        $worker = Worker::find($id);
+        $worker = Worker::where('id',$id)
+            ->with('workerAccounts')->first();
         if(!$worker){
             return new ReturnResponseResource([
                 'code' => 404 ,

@@ -141,6 +141,7 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
 // Workers CRUD
     Route::apiResource('workers' , WorkerController::class);
     Route::post('/filter/workers' , [WorkerController::class , 'filterData']);
+    Route::post('/filter/salary' , [WorkerController::class , 'salary']);
 
 // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);

@@ -75,7 +75,7 @@ class WorkerController extends Controller
             'is_active' => 1 ,
         ]);
 
-        $this->show($worker->id);
+        return $this->show($worker->id);
     }
 
     /**

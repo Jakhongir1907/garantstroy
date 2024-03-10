@@ -75,7 +75,7 @@ class WorkerController extends Controller
             'is_active' => 1 ,
         ]);
 
-        return new ShowWorkerResource($worker);
+        $this->show($worker->id);
     }
 
     /**

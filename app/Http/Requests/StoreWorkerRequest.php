@@ -23,7 +23,7 @@ class StoreWorkerRequest extends FormRequest
     {
         return [
             'name' => ['required' , 'string'] ,
-            'phone_number' => ['required' , 'string'] ,
+            'phone_number' => ['required' , 'string','unique:workers'] ,
             'salary_rate' => ['required' , 'numeric' , 'min:1'] ,
             'position' =>  ['required' , 'in:brigadier,master,form_worker,fitter,worker'] ,
             'project_id' => ['required' , 'numeric' , 'min:1' , 'exists:projects,id'],

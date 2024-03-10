@@ -17,9 +17,26 @@ class WorkerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $projectId = $request->project_id;
+        $position = $request->position;
+        $search = $request->search;
+        if(empty($projectId) && empty($position) && empty($search)){
+            $workers = Worker::orderByDesc('created_at')->paginate(10);
+        }else{
+            $workers = Worker::when($projectId, function ($query) use ($projectId) {
+                $query->where('project_id', $projectId);
+            })->when($position, function ($query) use ($position) {
+                    $query->where('position', '>=', $position);
+                })
+                ->when($search, function ($query) use ($search) {
+                    $query->where('date', 'LIKE', '%' . $search . '%');
+                })
+                ->get();
+        }
 
+        return new WorkerCollection($workers);
     }
 
     public function filterData(Request $request){

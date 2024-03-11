@@ -131,7 +131,6 @@ class WorkerController extends Controller
                     'message' => "Bu ishchi xali ish boshlamagan oldin ish boshlash sanasini kiriting!"
                 ] , 404);
             }
-
         }
         $worker->update([
             'name' => $request->name ,

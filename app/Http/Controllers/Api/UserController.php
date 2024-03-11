@@ -7,6 +7,7 @@ use App\Http\Resources\ReturnResponseResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -36,7 +37,8 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name ,
             'username' => $request->username,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password) ,
+            'parol' => $request->password
         ]);
         return response()->json([
             'user' => $user
@@ -65,6 +67,12 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'name' => ['required' , 'string'],
+            'username' => ['required' , 'string' , Rule::unique('users')->ignore($id)],
+            'password' => ['required'] ,
+        ]);
+
         $user = User::find($id);
         if(!$user){
             return new ReturnResponseResource([
@@ -75,7 +83,8 @@ class UserController extends Controller
         $user->update([
             'name' => $request->name ,
             'username' => $request->username,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password) ,
+            'parol' => $request->password
         ]);
         return response()->json([
             'user' => $user

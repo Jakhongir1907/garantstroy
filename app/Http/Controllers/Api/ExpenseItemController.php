@@ -51,8 +51,13 @@ class ExpenseItemController extends Controller
                 'message' => 'Record not found!'
             ]);
         }
-
-        return new ShowExpenseItemResource($expenseItem::update($request->all()));
+        $expenseItem->update([
+            'comment' => $request->comment ,
+            'date' => $request->date ,
+            'summa' => $request->summa,
+            'expense_id' => $request->expense_id
+        ]);
+        return new ShowExpenseItemResource($expenseItem);
     }
 
     /**

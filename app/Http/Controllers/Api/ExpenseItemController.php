@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExpenseItemRequest;
 use App\Http\Requests\UpdateExpenseItemRequest;
 use App\Http\Resources\ExpenseItemcollection;
+use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowExpenseItemResource;
 use App\Models\ExpenseItem;
 use Illuminate\Http\Request;
@@ -43,7 +44,15 @@ class ExpenseItemController extends Controller
      */
     public function update(UpdateExpenseItemRequest $request, string $id)
     {
-        return new ShowExpenseItemResource(ExpenseItem::update($request->all()));
+        $expenseItem = ExpenseItem::find($id);
+        if(!$expenseItem){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'Record not found!'
+            ]);
+        }
+
+        return new ShowExpenseItemResource($expenseItem::update($request->all()));
     }
 
     /**

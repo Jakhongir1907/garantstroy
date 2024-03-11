@@ -94,7 +94,6 @@ class ExpenseController extends Controller
                 'message' => 'Record not found!'
             ] , 404);
         }
-
         $expense->update([
             'category' => $request->category ,
             'comment' => $request->comment ,

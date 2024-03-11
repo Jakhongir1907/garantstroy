@@ -49,7 +49,7 @@ class ExpenseItemController extends Controller
             return new ReturnResponseResource([
                 'code' => 404 ,
                 'message' => 'Record not found!'
-            ]);
+            ],404);
         }
         $expenseItem->update([
             'comment' => $request->comment ,
@@ -65,6 +65,17 @@ class ExpenseItemController extends Controller
      */
     public function destroy(string $id)
     {
-
+        $expenseItem = ExpenseItem::find($id);
+        if(!$expenseItem){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'Record not found!'
+            ],404);
+        }
+        $expenseItem->delete();
+        return new ReturnResponseResource([
+            'code' => 200 ,
+            'message' => 'Record has been deleted successfully!'
+        ]);
     }
 }

@@ -143,6 +143,7 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
     Route::post('/filter/workers' , [WorkerController::class , 'filterData']);
 // Expenses CRUD
         Route::apiResource('expenses' , \App\Http\Controllers\Api\ExpenseController::class);
+        Route::apiResource('expense-items' , \App\Http\Controllers\Api\ExpenseItemController::class);
 
         //User CRUD
         Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);

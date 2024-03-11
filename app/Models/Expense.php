@@ -19,4 +19,8 @@ class Expense extends Model
     public function project(){
         return $this->belongsTo(Project::class);
     }
+
+    public function expenseItems(){
+        return $this->hasMany(ExpenseItem::class);
+    }
 }

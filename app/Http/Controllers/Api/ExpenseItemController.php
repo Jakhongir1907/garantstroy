@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExpenseItemRequest;
+use App\Http\Requests\UpdateExpenseItemRequest;
 use App\Http\Resources\ExpenseItemcollection;
 use App\Http\Resources\ShowExpenseItemResource;
 use App\Models\ExpenseItem;
@@ -40,7 +41,7 @@ class ExpenseItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateExpenseItemRequest $request, string $id)
     {
         return new ShowExpenseItemResource(ExpenseItem::update($request->all()));
     }

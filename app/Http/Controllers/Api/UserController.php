@@ -51,7 +51,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
-        if(!$user && $user->is_admin){
+        if(!$user || $user->is_admin){
             return new ReturnResponseResource([
                 'code' => 404 ,
                 'message' => "Record not found!"
@@ -74,7 +74,7 @@ class UserController extends Controller
         ]);
 
         $user = User::find($id);
-        if(!$user && $user->is_admin){
+        if(!$user || $user->is_admin){
             return new ReturnResponseResource([
                 'code' => 404 ,
                 'message' => "Record not found!"

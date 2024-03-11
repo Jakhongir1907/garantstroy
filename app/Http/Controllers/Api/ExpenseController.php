@@ -63,7 +63,8 @@ class ExpenseController extends Controller
             'summa' => $request->summa ,
             'date' => $request->date ,
         ]);
-        return $this->show($expense);
+
+        return $this->show($expense->id);
     }
 
     /**

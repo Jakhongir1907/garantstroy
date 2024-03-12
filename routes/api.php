@@ -144,6 +144,8 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
     Route::post('/filter/salary' , [WorkerController::class , 'salary']);
     Route::post('/store/dayoff' , [WorkerController::class , 'dayoff']);
     Route::post('/store/payment' , [WorkerController::class , 'payment']);
+    Route::post('/start/work' , [WorkerController::class , 'start_work']);
+    Route::post('/finish/work' , [WorkerController::class , 'finish_work']);
 
 // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);

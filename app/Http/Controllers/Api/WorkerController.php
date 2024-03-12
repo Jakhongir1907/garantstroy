@@ -41,6 +41,40 @@ class WorkerController extends Controller
         return new WorkerAccountCollection($workerAccounts);
     }
 
+    public function start_work(Request $request){
+        $this->validate($request, [
+            'worker_id' => 'required|exists:workers,id',
+            'started_date' => 'required|date_format:Y-m-d',
+            'status' => 'required|in:working,finished,payed',
+        ]);
+        $worker = Worker::find($request->worker_id);
+        WorkerAccount::create([
+            'worker_id' => $request->worker_id,
+            'started_date' => $request->started_date,
+            'status' => $request->status,
+            'salary_rate' => $worker->salary_rate,
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker start work successfuly!"
+        ] , 200);
+    }
+
+    public function finish_work(Request $request){
+        $this->validate($request, [
+            'worker_account_id' => 'required|exists:worker_accounts,id',
+            'finished_date' => 'required|date_format:Y-m-d',
+            'status' => 'required|in:working,finished,payed',
+        ]);
+        WorkerAccount::where('id',$request->worker_account_id)->update([
+            'finished_date' => $request->finished_date,
+            'status' => $request->status,
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker Account status changed successfuly!"
+        ] , 200);
+    }
     public function dayoff(Request $request){
         $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
         if(!$w_account){

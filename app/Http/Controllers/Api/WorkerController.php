@@ -34,10 +34,10 @@ class WorkerController extends Controller
             $workers = Worker::when($projectId, function ($query) use ($projectId) {
                 $query->where('project_id', $projectId);
             })->when($position, function ($query) use ($position) {
-                    $query->where('position', '>=', $position);
+                    $query->where('position', $position);
                 })
                 ->when($search, function ($query) use ($search) {
-                    $query->where('date', 'LIKE', '%' . $search . '%');
+                    $query->where('name', 'LIKE', '%' . $search . '%');
                 })->orderByDesc('created_at')->get();
         }
 

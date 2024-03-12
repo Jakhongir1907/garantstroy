@@ -94,7 +94,10 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('expenses' ,\App\Http\Controllers\Api\ExpenseController::class);
     Route::apiResource('expense-items' ,\App\Http\Controllers\Api\ExpenseItemController::class);
 
-
+    Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
+// Projects CRUD
+    Route::apiResource('projects' , ProjectController::class);
+    Route::get('/all-projects' , [ProjectController::class , 'allData']);
     Route::middleware(['admin'])->group(function (){
 //     Other Expenses
     Route::apiResource('other-expenses' , OtherExpenseController::class);
@@ -119,9 +122,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
     //    Route::post('/filter/house-trade-expenses' , [HouseTradeExpenseController::class , 'filterData']);
 //
-// Projects CRUD
-    Route::apiResource('projects' , ProjectController::class);
-    Route::get('/all-projects' , [ProjectController::class , 'allData']);
+
 //
 // Hired Workers CRUD
     Route::apiResource('hired-workers' , HiredWorkerController::class);
@@ -156,7 +157,7 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
     Route::post('/finish/work' , [WorkerController::class , 'finish_work']);
 
         //User CRUD
-        Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
+
 
         // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);

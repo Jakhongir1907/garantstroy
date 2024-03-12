@@ -27,7 +27,6 @@ class StoreWorkerRequest extends FormRequest
             'salary_rate' => ['required' , 'numeric' , 'min:1'] ,
             'position' =>  ['required' , 'in:brigadier,master,form_worker,fitter,worker'] ,
             'project_id' => ['required' , 'numeric' , 'min:1' , 'exists:projects,id'],
-            'is_active' => ['required' , 'boolean'] ,
         ];
     }
 }

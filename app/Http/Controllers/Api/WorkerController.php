@@ -170,7 +170,6 @@ class WorkerController extends Controller
             'position' => $request->position ,
             'salary_rate' => $request->salary_rate ,
             'project_id' => $request->project_id ,
-            'is_active' => 1 ,
         ]);
 
         return $this->show($worker->id);
@@ -211,7 +210,6 @@ class WorkerController extends Controller
             'position' => $request->position ,
             'salary_rate' => $request->salary_rate ,
             'project_id' => $request->project_id ,
-            'is_active' =>  $request->is_active,
         ]);
 
         return new ShowWorkerResource($worker);

@@ -10,7 +10,7 @@ class AdvancePayment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'amount' , 'date' , 'worker_id'
+        'amount' , 'date' ,'type', 'worker_account_id'
     ];
 
     public function worker(){

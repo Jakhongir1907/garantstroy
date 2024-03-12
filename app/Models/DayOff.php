@@ -10,7 +10,7 @@ class DayOff extends Model
     use HasFactory;
 
     protected $fillable = [
-        'quantity' ,'date' , 'worker_id'
+        'quantity' ,'date' , 'worker_account_id'
     ];
 
     public function worker(){

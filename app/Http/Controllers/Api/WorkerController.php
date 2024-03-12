@@ -10,6 +10,8 @@ use App\Http\Resources\ShowWorkerAccountResource;
 use App\Http\Resources\ShowWorkerResource;
 use App\Http\Resources\WorkerAccountCollection;
 use App\Http\Resources\WorkerCollection;
+use App\Models\AdvancePayment;
+use App\Models\DayOff;
 use App\Models\Worker;
 use App\Models\WorkerAccount;
 use Illuminate\Http\Request;
@@ -37,6 +39,52 @@ class WorkerController extends Controller
         })*/
         ->get();
         return new WorkerAccountCollection($workerAccounts);
+    }
+
+    public function dayoff(Request $request){
+        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        if(!$w_account){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => "Worker is not working!"
+            ] , 404);
+        }
+        DayOff::create([
+            'date' => $request->date,
+            'quantity' => $request->quantity,
+            'worker_account_id' => $w_account->id,
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker day off added successfuly!"
+        ] , 200);
+    }
+
+    public function payment(Request $request){
+        $this->validate($request, [
+            'amount' => 'required',
+            'date' => 'required|date_format:Y-m-d',
+            'type' => 'required|in:advance,salary',
+            'worker_id' => 'required|exists:workers,id',
+        ]);
+
+        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        if(!$w_account){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => "Worker is not working!"
+            ] , 404);
+        }
+        AdvancePayment::create([
+            'amount' => $request->amount,
+            'date' => $request->date,
+            'type' => $request->type,
+            'worker_account_id' => $w_account->id
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker payment added successfuly!"
+        ] , 200);
     }
 
     public function filterData(Request $request){

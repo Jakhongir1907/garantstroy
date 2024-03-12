@@ -22,6 +22,7 @@ class ShowWorkerResource extends JsonResource
             'is_active' => $this->is_active ,
             'project_id' => ($this->project) ? $this->project_id : "" ,
             'project_name' => ($this->project) ? $this->project->name : "" ,
+            'workerAccounts' => new WorkerAccountCollection($this->workerAccounts) ?? [],
         ];
     }
 }

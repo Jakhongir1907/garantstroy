@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->decimal('amount' , 15 ,2)->nullable();
             $table->date('date')->default(now());
-            $table->unsignedBigInteger('worker_id')->nullable();
-            $table->foreign('worker_id')->references('id')->on('workers');
+            $table->enum('type',['advance','salary'])->default('advance');
+            $table->unsignedBigInteger('worker_account_id')->nullable();
+            $table->foreign('worker_account_id')->references('id')->on('worker_accounts');
             $table->timestamps();
         });
     }

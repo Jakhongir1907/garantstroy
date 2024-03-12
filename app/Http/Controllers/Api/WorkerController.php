@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWorkerRequest;
 use App\Http\Requests\UpdateWorkerRequest;
 use App\Http\Resources\ReturnResponseResource;
+use App\Http\Resources\ShowWorkerAccountResource;
 use App\Http\Resources\ShowWorkerResource;
+use App\Http\Resources\WorkerAccountCollection;
 use App\Http\Resources\WorkerCollection;
+use App\Models\AdvancePayment;
+use App\Models\DayOff;
 use App\Models\Worker;
 use App\Models\WorkerAccount;
 use Illuminate\Http\Request;
@@ -37,6 +41,101 @@ class WorkerController extends Controller
         }
 
         return new WorkerCollection($workers);
+    }
+
+    public function salary(Request $request){
+        $workers = $request->workers;
+        $started_date = $request->started_date;
+        $finished_date = $request->finished_date;
+        $workerAccounts = WorkerAccount::when($workers, function ($query) use ($workers){
+            $query->whereIn('worker_id',$workers);
+        })->when($started_date, function ($query) use ($started_date){
+            $query->where('started_date','<=',$started_date);
+        })/*->when($finished_date, function ($query) use ($finished_date){
+            $query->where('finished_date', '>=',$finished_date);
+        })*/
+        ->get();
+        return new WorkerAccountCollection($workerAccounts);
+    }
+
+    public function start_work(Request $request){
+        $this->validate($request, [
+            'worker_id' => 'required|exists:workers,id',
+            'started_date' => 'required|date_format:Y-m-d',
+            'status' => 'required|in:working,finished,payed',
+        ]);
+        $worker = Worker::find($request->worker_id);
+        WorkerAccount::create([
+            'worker_id' => $request->worker_id,
+            'started_date' => $request->started_date,
+            'status' => $request->status,
+            'salary_rate' => $worker->salary_rate,
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker start work successfuly!"
+        ] , 200);
+    }
+
+    public function finish_work(Request $request){
+        $this->validate($request, [
+            'worker_account_id' => 'required|exists:worker_accounts,id',
+            'finished_date' => 'required|date_format:Y-m-d',
+            'status' => 'required|in:working,finished,payed',
+        ]);
+        WorkerAccount::where('id',$request->worker_account_id)->update([
+            'finished_date' => $request->finished_date,
+            'status' => $request->status,
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker Account status changed successfuly!"
+        ] , 200);
+    }
+    public function dayoff(Request $request){
+        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        if(!$w_account){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => "Worker is not working!"
+            ] , 404);
+        }
+        DayOff::create([
+            'date' => $request->date,
+            'quantity' => $request->quantity,
+            'worker_account_id' => $w_account->id,
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker day off added successfuly!"
+        ] , 200);
+    }
+
+    public function payment(Request $request){
+        $this->validate($request, [
+            'amount' => 'required',
+            'date' => 'required|date_format:Y-m-d',
+            'type' => 'required|in:advance,salary',
+            'worker_id' => 'required|exists:workers,id',
+        ]);
+
+        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        if(!$w_account){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => "Worker is not working!"
+            ] , 404);
+        }
+        AdvancePayment::create([
+            'amount' => $request->amount,
+            'date' => $request->date,
+            'type' => $request->type,
+            'worker_account_id' => $w_account->id
+        ]);
+        return new ReturnResponseResource([
+            'code' => 200,
+            'message' => "Worker payment added successfuly!"
+        ] , 200);
     }
 
     public function filterData(Request $request){
@@ -83,7 +182,8 @@ class WorkerController extends Controller
      */
     public function show(string $id)
     {
-        $worker = Worker::find($id);
+        $worker = Worker::where('id',$id)
+            ->with('workerAccounts')->first();
         if(!$worker){
             return new ReturnResponseResource([
                 'code' => 404 ,

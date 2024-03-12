@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('worker_id')->references('id')->on('workers');
             $table->date('started_date')->nullable();
             $table->date('finished_date')->nullable();
+            $table->enum('status',["working","finished","payed"])->default("working");
+            $table->decimal('salary_rate')->default(0);
             $table->timestamps();
         });
     }

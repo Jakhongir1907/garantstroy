@@ -28,10 +28,12 @@ class ExpenseController extends Controller
         if(empty($projectId) && empty($startDate) && empty($endDate) && empty($category) && empty($user_id)){
             if($user->is_admin){
             $expenses = Expense::orderByDesc('date')->paginate(10);
+                return new ExpenseCollection($expenses);
             }else{
                 $expenses = Expense::where('user_id' , $user->id)->orderByDesc('date')->paginate(10);
+                return new FilteredExpenseCollection($expenses);
             }
-            return new ExpenseCollection($expenses);
+
         }else{
             if($user->is_admin){
                 $expenses = Expense::when($projectId, function ($query) use ($projectId) {

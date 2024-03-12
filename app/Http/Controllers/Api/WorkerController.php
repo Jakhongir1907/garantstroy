@@ -15,6 +15,7 @@ use App\Models\DayOff;
 use App\Models\Worker;
 use App\Models\WorkerAccount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WorkerController extends Controller
 {
@@ -26,6 +27,7 @@ class WorkerController extends Controller
         $projectId = $request->project_id;
         $position = $request->position;
         $search = $request->search;
+
         if(empty($projectId) && empty($position) && empty($search)){
             $workers = Worker::orderByDesc('created_at')->paginate(10);
         }else{
@@ -36,8 +38,7 @@ class WorkerController extends Controller
                 })
                 ->when($search, function ($query) use ($search) {
                     $query->where('date', 'LIKE', '%' . $search . '%');
-                })
-                ->get();
+                })->orderByDesc('created_at')->get();
         }
 
         return new WorkerCollection($workers);

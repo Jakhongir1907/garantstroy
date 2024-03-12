@@ -156,7 +156,6 @@ class WorkerController extends Controller
                 })
                 ->get();
         }
-
         return new WorkerCollection($workers);
     }
 
@@ -206,39 +205,13 @@ class WorkerController extends Controller
                 'message' => "Record not found!"
             ] , 404);
         }
-        $keldi_ketdi = $request->is_active;
-        if($keldi_ketdi){
-            $workerAccount = WorkerAccount::where('worker_id' , $worker->id)->whereNull('finished_date')->latest()->first();
-            if($workerAccount){
-                $workerAccount->update([
-                    'started_date' => $request->start_date ,
-                ]);
-            }else{
-                $workerAccount = WorkerAccount::create([
-                    'worker_id' => $worker->id ,
-                    'started_date' => $request->start_date
-                ]);
-            }
-        }else{
-            $workerAccount = WorkerAccount::where('worker_id' , $worker->id)->whereNull('finished_date')->latest()->first();
-            if($workerAccount){
-                $workerAccount->update([
-                    'finished_date' => $request->finished_date
-                ]);
-            }else{
-                return new ReturnResponseResource([
-                    'code' => 404 ,
-                    'message' => "Bu ishchi xali ish boshlamagan oldin ish boshlash sanasini kiriting!"
-                ] , 404);
-            }
-        }
         $worker->update([
             'name' => $request->name ,
             'phone_number' => $request->phone_number ,
             'position' => $request->position ,
             'salary_rate' => $request->salary_rate ,
             'project_id' => $request->project_id ,
-            'is_active' => $keldi_ketdi ,
+            'is_active' =>  $request->is_active,
         ]);
 
         return new ShowWorkerResource($worker);
@@ -256,7 +229,7 @@ class WorkerController extends Controller
                 'message' => 'Record not found!'
             ]);
         }
-        if($worker->dayOffs()->count() > 0 || $worker-advancePayments()->count() > 0 || $worker->workerAccounts()->count() > 0){
+        if($worker->dayOffs()->count() > 0 || $worker->advancePayments()->count() > 0 || $worker->workerAccounts()->count() > 0){
             return new ReturnResponseResource([
                 'code' => 404 ,
                 'message' => 'You can not delete this worker!'

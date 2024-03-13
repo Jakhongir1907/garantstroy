@@ -21,9 +21,26 @@ class WorkerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $projectId = $request->project_id;
+        $position = $request->position;
+        $search = $request->search;
+        if(empty($projectId) && empty($position) && empty($search)){
+            $workers = Worker::orderByDesc('created_at')->paginate(10);
+        }else{
+            $workers = Worker::when($projectId, function ($query) use ($projectId) {
+                $query->where('project_id', $projectId);
+            })->when($position, function ($query) use ($position) {
+                    $query->where('position', '>=', $position);
+                })
+                ->when($search, function ($query) use ($search) {
+                    $query->where('date', 'LIKE', '%' . $search . '%');
+                })
+                ->get();
+        }
 
+        return new WorkerCollection($workers);
     }
 
     public function salary(Request $request){
@@ -189,7 +206,7 @@ class WorkerController extends Controller
             'is_active' => 1 ,
         ]);
 
-        return new ShowWorkerResource($worker);
+        return $this->show($worker->id);
     }
 
     /**
@@ -246,7 +263,6 @@ class WorkerController extends Controller
                     'message' => "Bu ishchi xali ish boshlamagan oldin ish boshlash sanasini kiriting!"
                 ] , 404);
             }
-
         }
         $worker->update([
             'name' => $request->name ,

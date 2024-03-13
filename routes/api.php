@@ -141,13 +141,17 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
 // Workers CRUD
     Route::apiResource('workers' , WorkerController::class);
     Route::post('/filter/workers' , [WorkerController::class , 'filterData']);
+
     Route::post('/filter/salary' , [WorkerController::class , 'salary']);
     Route::post('/store/dayoff' , [WorkerController::class , 'dayoff']);
     Route::post('/store/payment' , [WorkerController::class , 'payment']);
     Route::post('/start/work' , [WorkerController::class , 'start_work']);
     Route::post('/finish/work' , [WorkerController::class , 'finish_work']);
 
-// Image Upload and Delete Image
+        //User CRUD
+        Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
+
+        // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);
     Route::post('/image-delete', [ImageUploadController::class, 'imageDelete']);
 //

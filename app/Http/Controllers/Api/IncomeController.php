@@ -29,6 +29,7 @@ class IncomeController extends Controller
         $endDate = $request->end_date;
         if(empty($projectId) && empty($startDate) && empty($endDate)){
             $incomes = Income::orderByDesc('date')->paginate(10);
+            return new IncomeCollection($incomes);
         }else{
             $incomes = Income::when($projectId, function ($query) use ($projectId) {
                 $query->where('project_id', $projectId);

@@ -27,18 +27,50 @@ class WorkerController extends Controller
     }
 
     public function salary(Request $request){
-        $workers = $request->workers;
-        $started_date = $request->started_date;
-        $finished_date = $request->finished_date;
-        $workerAccounts = WorkerAccount::when($workers, function ($query) use ($workers){
-            $query->whereIn('worker_id',$workers);
-        })->when($started_date, function ($query) use ($started_date){
-            $query->where('started_date','<=',$started_date);
-        })/*->when($finished_date, function ($query) use ($finished_date){
-            $query->where('finished_date', '>=',$finished_date);
-        })*/
-        ->get();
-        return new WorkerAccountCollection($workerAccounts);
+        // Validate the incoming request data
+        $request->validate([
+            'workers' => 'required|array',
+            'workers.*' => 'exists:workers,id',
+            'started_date' => 'required|date',
+            'finished_date' => 'required|date|after_or_equal:started_date',
+        ]);
+        $workers = $request->input('workers');
+        $startedDate = $request->input('started_date');
+        $finishedDate = $request->input('finished_date');
+        $workerAccounts = WorkerAccount::whereIn('worker_id', $workers)
+            ->whereBetween('started_date', [$startedDate, $finishedDate])
+            ->orWhereBetween('finished_date', [$startedDate, $finishedDate])
+            ->get();
+        $salaries = [];
+        foreach ($workerAccounts as $workerAccount) {
+            $info = $this->calculateWorkerSalary($workerAccount, $startedDate, $finishedDate);
+            $arr = [
+                'worker_id' => $workerAccount->id,
+                'day_offs' => $info['day_offs'],
+                'payed' => $info['payed'],
+                'days' => $info['days'],
+                'salary_rate' => $workerAccount->salary_rate,
+                'total' => $info['total']
+            ];
+        }
+        $salaries[]=$arr;
+        return response()->json($salaries);
+    }
+
+    private function calculateWorkerSalary($workerAccount, $startedDate, $finishedDate)
+    {
+        $dayOffs = DayOff::where('worker_account_id',$workerAccount->id)->sum('quantity');
+        $payed = AdvancePayment::where('worker_account_id',$workerAccount->id)->sum('amount');
+        $startDate = max($workerAccount->started_date, $startedDate);
+        $endDate = min($workerAccount->finished_date, $finishedDate);
+        $daysWorked = max(0, min(1, ($endDate - $startDate) / (60 * 60 * 24)));
+        $total = ($daysWorked - $dayOffs) * $workerAccount->salary_rate - $payed;
+        return [
+            'day_offs' => $dayOffs,
+            'payed' => $payed,
+            'days' => $daysWorked,
+            'total' => $total,
+        ];
     }
 
     public function start_work(Request $request){

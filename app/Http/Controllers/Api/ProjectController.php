@@ -59,6 +59,7 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, string $id)
     {
+
         $project = Project::find($id);
         if(!$project){
             return new ReturnResponseResource([

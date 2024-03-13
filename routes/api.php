@@ -97,7 +97,9 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
 // Projects CRUD
     Route::apiResource('projects' , ProjectController::class);
+
     Route::get('/all-projects' , [ProjectController::class , 'allData']);
+
     Route::middleware(['admin'])->group(function (){
 //     Other Expenses
     Route::apiResource('other-expenses' , OtherExpenseController::class);
@@ -155,9 +157,6 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
     Route::post('/store/payment' , [WorkerController::class , 'payment']);
     Route::post('/start/work' , [WorkerController::class , 'start_work']);
     Route::post('/finish/work' , [WorkerController::class , 'finish_work']);
-
-        //User CRUD
-
 
         // Image Upload and Delete Image
     Route::post('/image-upload', [ImageUploadController::class, 'imageUpload']);

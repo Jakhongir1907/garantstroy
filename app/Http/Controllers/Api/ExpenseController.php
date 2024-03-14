@@ -24,24 +24,44 @@ class ExpenseController extends Controller
         $user_id = $request->user_id;
         $startDate = $request->start_date;
         $endDate = $request->end_date;
+        $user = auth()->user();
         if(empty($projectId) && empty($startDate) && empty($endDate) && empty($category) && empty($user_id)){
+            if($user->is_admin){
             $expenses = Expense::orderByDesc('date')->paginate(10);
-            return new ExpenseCollection($expenses);
+                return new ExpenseCollection($expenses);
+            }else{
+                $expenses = Expense::where('user_id' , $user->id)->orderByDesc('date')->paginate(10);
+                return new FilteredExpenseCollection($expenses);
+            }
+
         }else{
-            $expenses = Expense::when($projectId, function ($query) use ($projectId) {
-                $query->where('project_id', $projectId);
-            })
-                ->when($category, function ($query) use ($category) {
+            if($user->is_admin){
+                $expenses = Expense::when($projectId, function ($query) use ($projectId) {
+                    $query->where('project_id', $projectId);
+                })->when($category, function ($query) use ($category) {
                     $query->where('category', $category);
                 })->when($user_id, function ($query) use ($user_id) {
                     $query->where('user_id', $user_id);
                 })->when($startDate, function ($query) use ($startDate) {
                     $query->where('date', '>=', $startDate);
                 })
-                ->when($endDate, function ($query) use ($endDate){
-                    $query->where('date', '<=', $endDate);
-                })
-                ->get();
+                    ->when($endDate, function ($query) use ($endDate){
+                        $query->where('date', '<=', $endDate);
+                    })->orderByDesc('date')->get();
+            }else{
+                $expenses = Expense::where('user_id' , $user->id)->when($projectId, function ($query) use ($projectId) {
+                    $query->where('project_id', $projectId);
+                })->when($category, function ($query) use ($category) {
+                    $query->where('category', $category);
+                })->when($user_id, function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })->when($startDate, function ($query) use ($startDate) {
+                    $query->where('date', '>=', $startDate);
+                })->when($endDate, function ($query) use ($endDate){
+                        $query->where('date', '<=', $endDate);
+                    })->orderByDesc('date')->get();
+            }
+
             return new FilteredExpenseCollection($expenses);
         }
     }

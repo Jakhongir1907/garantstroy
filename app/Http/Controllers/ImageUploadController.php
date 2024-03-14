@@ -16,7 +16,6 @@ class ImageUploadController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
             $image->move(public_path('uploads'), $imageName);
-
             return response()->json([
                 'message' => "Image uploaded successfully",
                 'image_url' => url('uploads/' . $imageName),

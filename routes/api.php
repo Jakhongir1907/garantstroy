@@ -125,6 +125,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('house-trade-expenses' , HouseTradeExpenseController::class);
     Route::get('/trade-expenses/{house_trade_id}' , [HouseTradeExpenseController::class , 'getByHouseTrade']);
 
+
     //    Route::post('/filter/house-trade-expenses' , [HouseTradeExpenseController::class , 'filterData']);
 //
 
@@ -172,7 +173,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
 });
 });
 
-
+Route::get('/trade-expenses/export/{house_trade_id}' , [HouseTradeExpenseController::class , 'exportExcel']);
 
 
 

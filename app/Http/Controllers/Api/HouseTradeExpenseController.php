@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\HouseTradeExpenseExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHouseTradeExpenseRequest;
 use App\Http\Requests\UpdateHouseTradeExpenseRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\ShowTradeHouseExpenseResource;
 use App\Models\HouseTrade;
 use App\Models\HouseTradeExpense;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HouseTradeExpenseController extends Controller
 {
@@ -20,6 +22,22 @@ class HouseTradeExpenseController extends Controller
     public function index()
     {
         //
+    }
+    public function exportExcel($house_trade_id){
+        $expenses = HouseTradeExpense::where('house_trade_id', $house_trade_id)->get();
+       //'IZOH','SANA','SUMMA','VALYUTA','KURSI','JAMI'
+        $data = [];
+        foreach ($expenses as $expense) {
+            $data [] = [
+                'comment'=> $expense->comment ,
+                'date'=> $expense->date ,
+                'summa'=> $expense->summa ,
+                'currency' => ($expense->currency=='dollar') ? "USD":"UZS",
+                'currency_rate' => $expense->currency_rate ,
+                'amount' => $expense->amount
+            ];
+        }
+        return Excel::download(new HouseTradeExpenseExport($data) ,'uy_biznesi.xlsx');
     }
 
     public function getByHouseTrade(string $trade_id){

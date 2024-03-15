@@ -19,7 +19,10 @@ class DayOffController extends Controller
     public function index(Request $request)
     {
         $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        $dayOffs = [];
+        if($w_account){
         $dayOffs = DayOff::where('worker_account_id', $w_account->id)->get();
+        }
         return new DayOffCollection($dayOffs);
     }
 

@@ -27,6 +27,9 @@ use App\Http\Controllers\Api\ContractController;
 use App\Http\Controllers\Api\ContractFloorController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\WorkerController;
+use App\Http\Controllers\Api\DayOffController;
+use App\Http\Controllers\Api\AdvancePaymentController;
+use App\Http\Controllers\Api\WorkerAccountController;
 
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -135,8 +138,8 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::post('/filter/contracts' , [ContractController::class , 'filterData']);
 //
 // Contract Floors
-Route::apiResource('floors' , ContractFloorController::class);
-Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 'filterData']);
+    Route::apiResource('floors' , ContractFloorController::class);
+    Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 'filterData']);
 //
 // Hired Worker Expenses
     Route::apiResource('hired-worker-expenses' ,HiredWorkerExpenseController::class);
@@ -149,6 +152,9 @@ Route::get('/contract-floors/{contract_id}' , [ContractFloorController::class , 
     Route::apiResource('incomes' , IncomeController::class);
     Route::post('/filter/incomes' , [IncomeController::class , 'filterData']);
 
+    Route::apiResource('day-offs' , DayOffController::class);
+    Route::apiResource('advance-payments' , AdvancePaymentController::class);
+    Route::apiResource('worker-accounts' , WorkerAccountController::class);
 
 
 

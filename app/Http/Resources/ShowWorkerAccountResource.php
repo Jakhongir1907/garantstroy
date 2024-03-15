@@ -15,12 +15,13 @@ class ShowWorkerAccountResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            //'worker' => $this->worker,
+            'id' => $this->id,
             'started_date' => $this->started_date,
             'finished_date' => $this->finished_date,
             'status' => $this->status,
             'salary_rate' => $this->salary_rate,
-            //'day_offs' => $this->dayOffs ?? [],
+            'day_offs' => $this->dayOffs->sum('quantity') ?? 0,
+            'total_amount' =>($this->advancePayments)? $this->advancePayments->sum('amount') : 0,
             //'advance_payment' => $this->advancePayment ?? []
         ];
     }

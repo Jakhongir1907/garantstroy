@@ -9,7 +9,7 @@ class WorkerAccount extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'worker_id' , 'started_date' , 'finished_date','status','salary_rate',
+        'worker_id' , 'finished_date','status','salary_rate', 'started_date'
     ];
 
     public function worker(){
@@ -21,7 +21,7 @@ class WorkerAccount extends Model
         return $this->hasMany(DayOff::class, 'worker_account_id')->orderByDesc('id');
     }
 
-    public function advancePayment(){
+    public function advancePayments(){
         return $this->hasMany(AdvancePayment::class,'worker_account_id')->orderByDesc('id');
     }
 }

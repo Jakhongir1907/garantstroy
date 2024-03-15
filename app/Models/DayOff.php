@@ -13,7 +13,8 @@ class DayOff extends Model
         'quantity' ,'date' , 'worker_account_id'
     ];
 
-    public function worker(){
-        return $this->belongsTo(Worker::class);
+    public function workerAccount(){
+        return $this->belongsTo(WorkerAccount::class);
     }
+
 }

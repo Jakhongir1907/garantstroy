@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\HiredWorkerExpenseExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHireWorkerExpenseRequest;
 use App\Http\Requests\UpdateHiredWorkerExpenseRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\ShowHiredWorkerExpenseResource;
 use App\Models\HiredWorker;
 use App\Models\HiredWorkerExpense;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HiredWorkerExpenseController extends Controller
 {
@@ -24,6 +26,41 @@ class HiredWorkerExpenseController extends Controller
             'message' => 'Yollanma ishchilarga berilgan umumiy pul mablag\'lari. ',
             'total_amount' => $totalAmount
         ]);
+    }
+    public function exportExcel($hired_worker_id){
+        $worker = HiredWorker::find($hired_worker_id);
+        if(!$worker){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'Record not found!'
+            ]);
+        }
+        $totalAmount = 0;
+        $data = [];
+        $expenses = HiredWorkerExpense::where('hired_worker_id' , $worker->id)->get();
+        foreach ($expenses as $expense){
+            $totalAmount += $expense->amount;
+            $data[] = [
+                'project' => $worker->project->name ?? " ",
+                'name' => $worker->name ?? " ",
+                'date' =>  $expense->date ?? " ",
+                'currency' => ($expense->currency=='sum') ? "So'm" : "$",
+                'currency_rate' => $expense->currency_rate,
+                'summa' => $expense->summa ,
+                'amount' => $expense->amount
+            ];
+        }
+        $data[] = [
+            'project' =>  " ",
+            'name' => " ",
+            'date' =>  " ",
+            'currency' => " ",
+            'currency_rate' => " ",
+            'summa' => "JAMI:" ,
+            'amount' => $totalAmount
+        ];
+
+        return Excel::download(new HiredWorkerExpenseExport($data) , 'Obyomchilar.xlsx');
     }
 
     public function getByWorker(string $worker_id){

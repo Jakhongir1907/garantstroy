@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\ContractFloorExport;
+use App\Exports\HouseTradeExpenseExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreContractFloorRequest;
 use App\Http\Requests\StoreContractRequest;
@@ -12,6 +14,7 @@ use App\Http\Resources\ShowContractFloorResource;
 use App\Models\Contract;
 use App\Models\ContractFloor;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContractFloorController extends Controller
 {
@@ -22,6 +25,42 @@ class ContractFloorController extends Controller
     {
         //
     }
+    public function exportExcel($contract_id){
+        $contract = Contract::find($contract_id);
+        if(!$contract){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'Record not found!'
+            ] , 404);
+        }
+        $contractFloors = ContractFloor::where('contract_id' , $contract_id)->get();
+        $data = [];
+
+        $totalAmount = 0;
+        foreach ($contractFloors as $contractFloor){
+            $currency = ($contractFloor->contract->currency=='dollar') ? "$" :"so'm";
+            $totalAmount += $contractFloor->square*$contractFloor->price;
+            $data[] = [
+                'block' => $contract->project->name ." ".$contractFloor->contract->block ?? " ",
+                'floor' => $contractFloor->floor ,
+                'square' => $contractFloor->square ,
+                'price' => $contractFloor->price.$currency ,
+                'currency' => $currency ,
+                'amount' => round($contractFloor->square*$contractFloor->price ,2).$currency
+            ];
+        }
+        $data[] = [
+            'block' =>" ",
+            'floor' => " " ,
+            'square' => " " ,
+            'price' => " " ,
+            'currency' => "JAMI:" ,
+            'amount' => $currency.$totalAmount
+        ];
+        return Excel::download(new ContractFloorExport($data) ,'Договор.xlsx');
+
+    }
+
     public function filterData(string $contract_id)
     {
         $contract = Contract::find($contract_id);

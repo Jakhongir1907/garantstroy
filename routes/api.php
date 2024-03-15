@@ -158,8 +158,13 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('worker-accounts' , WorkerAccountController::class);
 
 
+// Excel Exports
+        Route::get('/trade-expenses/export/{house_trade_id}' , [HouseTradeExpenseController::class , 'exportExcel']);
+        Route::get('/contracts/export/{contract_id}' , [ContractFloorController::class , 'exportExcel']);
+        Route::get('/hired-workers/export/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'exportExcel']);
 
-    Route::post('/filter/salary' , [WorkerController::class , 'salary']);
+
+        Route::post('/filter/salary' , [WorkerController::class , 'salary']);
     Route::post('/store/dayoff' , [WorkerController::class , 'dayoff']);
     Route::post('/store/payment' , [WorkerController::class , 'payment']);
     Route::post('/start/work' , [WorkerController::class , 'start_work']);
@@ -172,9 +177,6 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
 });
 });
-
-Route::get('/trade-expenses/export/{house_trade_id}' , [HouseTradeExpenseController::class , 'exportExcel']);
-
 
 
 

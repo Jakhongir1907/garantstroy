@@ -76,7 +76,7 @@ class DashboardController extends Controller
         $activeWorkers = 0;
         foreach ($workers as $worker){
             $allWorkers ++;
-            $workerAccount = WorkerAccount::where('worker_id' , $workers->id)->where('status' ,'working')->latest()->first();
+            $workerAccount = WorkerAccount::where('worker_id' , $worker->id)->where('status' ,'working')->latest()->first();
             if($workerAccount){
              $activeWorkers ++;
             }

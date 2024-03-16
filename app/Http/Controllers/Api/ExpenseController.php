@@ -66,6 +66,57 @@ class ExpenseController extends Controller
         }
     }
 
+    public function exportExcel(Request $request){
+        $projectId = $request->project_id;
+        $category = $request->category;
+        $user_id = $request->user_id;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        if(empty($projectId) && empty($startDate) && empty($endDate) && empty($category) && empty($user_id)){
+                $expenses = Expense::all();
+        }else{
+            $expenses = Expense::when($projectId, function ($query) use ($projectId) {
+                $query->where('project_id', $projectId);
+            })->when($category, function ($query) use ($category) {
+                $query->where('category', $category);
+            })->when($user_id, function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })->when($startDate, function ($query) use ($startDate) {
+                $query->where('date', '>=', $startDate);
+            })->when($endDate, function ($query) use ($endDate){
+                    $query->where('date', '<=', $endDate);
+                })->orderByDesc('date')->get();
+        }
+        if(!empty($expenses)){
+            $totalAmount = 0;
+          $data = [];
+          foreach ($expenses as $expense){
+              $totalAmount += $expense->amount;
+              $data[] = [
+                  'project' => $expense->project->name ?? " " ,
+                  'brigadier' => $expense->user->name ?? " " ,
+                  'comment' => $expense->comment ?? " " ,
+                  'date' => $expense->date ,
+                  'currency' => ($expense->currency=='dollar')? "$":"SO'M" ,
+                  'currency_rate' => $expense->currency_rate,
+                  'summa' => $expense->summa ,
+                  'amount' => $expense->amount ,
+              ];
+          }
+            $data[] = [
+                'project' =>  " " ,
+                'brigadier' => " " ,
+                'comment' => " " ,
+                'date' => " " ,
+                'currency' => " " ,
+                'currency_rate' => " ",
+                'summa' => "UMUMIY SUMMA:" ,
+                'amount' => $totalAmount ,
+            ];
+
+        }
+
+    }
     /**
      * Store a newly created resource in storage.
      */

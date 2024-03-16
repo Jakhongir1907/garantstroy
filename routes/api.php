@@ -30,6 +30,8 @@ use App\Http\Controllers\Api\WorkerController;
 use App\Http\Controllers\Api\DayOffController;
 use App\Http\Controllers\Api\AdvancePaymentController;
 use App\Http\Controllers\Api\WorkerAccountController;
+use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExpenseItemController;
 
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -94,8 +96,8 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('workers' , WorkerController::class);
     Route::post('/filter/workers' , [WorkerController::class , 'filterData']);
 
-    Route::apiResource('expenses' ,\App\Http\Controllers\Api\ExpenseController::class);
-    Route::apiResource('expense-items' ,\App\Http\Controllers\Api\ExpenseItemController::class);
+    Route::apiResource('expenses' ,ExpenseController::class);
+    Route::apiResource('expense-items' ,ExpenseItemController::class);
 
     Route::apiResource('users' , \App\Http\Controllers\Api\UserController::class);
 // Projects CRUD
@@ -178,6 +180,7 @@ Route::get('/trade-expenses/export/{house_trade_id}' , [HouseTradeExpenseControl
 Route::get('/contracts/export/{contract_id}' , [ContractFloorController::class , 'exportExcel']);
 Route::get('/hired-workers/export/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'exportExcel']);
 Route::get('/daromad/export' , [IncomeController::class , 'exportExcel']);
+Route::get('/xarajat/export' , [ExpenseController::class , 'exportExcel']);
 
 
 

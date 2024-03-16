@@ -7,8 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\AfterSheet;
-
-class IncomesExport implements FromArray,ShouldAutoSize,WithHeadings
+class ExpenseExport implements FromArray,ShouldAutoSize,WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -23,26 +22,20 @@ class IncomesExport implements FromArray,ShouldAutoSize,WithHeadings
     {
         return $this->data;
     }
-    //'project' =>  " " ,
-    //                'date' => " " ,
-    //                'comment' => " ",
-    //                'income_type' => " " ,
-    //                'currency' => " " ,
-    //                'currency_rate' => " " ,
-    //                'summa' => "JAMI SUMMA:" ,
-    //                'amount' => $totalAmount ,
+
     public function headings(): array
     {
         return [
-            'OBEKT NOMI','SANA','IZOH',"NAQD YOKI BANK",'VALYUTA','KURS','SUMMA','JAMI'
+            'OBEKT NOMI','ISH BOSHQARUVCHI','IZOH',"SANA",'VALYUTA','KURS','SUMMA','JAMI'
         ];
     }
     public function map($row): array
     {
         return [
             $row['project'],
-            $row['date'],
+            $row['brigadier'],
             $row['comment'],
+            $row['date'],
             $row['currency'],
             $row['currency_rate'],
             $row['summa'],
@@ -53,7 +46,7 @@ class IncomesExport implements FromArray,ShouldAutoSize,WithHeadings
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $event->sheet->getStyle('A1:F1')->applyFromArray([
+                $event->sheet->getStyle('A1:H1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                         'size' => 14, // Adjust the size as needed

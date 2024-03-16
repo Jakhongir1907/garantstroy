@@ -96,7 +96,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
 // Workers CRUD
     Route::apiResource('workers' , WorkerController::class);
     Route::post('/filter/workers' , [WorkerController::class , 'filterData']);
-    Route::get('/ishchilar/calculate-salary' , [WorkerController::class ,'calculateSalary']);
+
 
 
     Route::apiResource('expenses' ,ExpenseController::class);
@@ -179,6 +179,7 @@ Route::get('/contracts/export/{contract_id}' , [ContractFloorController::class ,
 Route::get('/hired-workers/export/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'exportExcel']);
 Route::get('/daromad/export' , [IncomeController::class , 'exportExcel']);
 Route::get('/xarajat/export' , [ExpenseController::class , 'exportExcel']);
+Route::get('/ishchilar/calculate-salary' , [WorkerController::class ,'calculateSalary']);
 
 
 

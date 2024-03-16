@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
 use App\Models\Income;
+use App\Models\Project;
+use App\Models\Worker;
+use App\Models\WorkerAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function allData(){
+
+       // Foyda uchun
         $months = [];
         $currentDate = new \DateTime();
         for ($i = 1; $i <= 6; $i++) {
@@ -34,7 +39,6 @@ class DashboardController extends Controller
             // Calculate the month and year for the current iteration
             $month = $startDate->copy()->addMonths($i)->month;
             $year = $startDate->copy()->addMonths($i)->year;
-
             // Query to get total income for the current month
             $totalIncome = Income::whereYear('date', $year)
                 ->whereMonth('date', $month)
@@ -57,10 +61,39 @@ class DashboardController extends Controller
         for ($i = 0; $i < $missingMonthsCount; $i++) {
             $profits[] = 0;
         }
+       // Total amount of Incomes for this Year
+        // Get the current year
+        $currentYear = date('Y');
+        // Query to get the total amount of all incomes for the current year
+        $totalIncomeAmount = Income::whereYear('date', $currentYear)->sum('amount');
+
+        // Total amount of Expenses for this Year
+        $totalExpenseAmount = Expense::whereYear('date' , $currentYear)->sum('amount');
+
+        //  Workers
+        $workers = Worker::all();
+        $allWorkers = 0;
+        $activeWorkers = 0;
+        foreach ($workers as $worker){
+            $allWorkers ++;
+            $workerAccount = WorkerAccount::where('worker_id' , $workers->id)->where('status' ,'working')->latest()->first();
+            if($workerAccount){
+             $activeWorkers ++;
+            }
+        }
+        // Projects number
+        $activeProjects = Project::where('state' , 'active')->count();
+        $allProjects = Project::count();
 
         return response()->json([
             'months' => $months ,
-            'profits' => $profits
+            'profits' => $profits ,
+            'total_incomes_amount' => $totalIncomeAmount ,
+            'total_expenses_amount' => $totalExpenseAmount ,
+            'all_workers_number' => $allWorkers ,
+            'active_workers_number' => $activeWorkers ,
+            'all_projects' => $allProjects,
+            'active_projects' => $activeProjects
         ]);
     }
 }

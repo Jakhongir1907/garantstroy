@@ -2,15 +2,13 @@
 
 namespace App\Exports;
 
-//
-
-
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class HiredWorkerExpenseExport implements FromArray , WithHeadings , ShouldAutoSize
+class IncomesExport implements FromArray,ShouldAutoSize,WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -25,16 +23,24 @@ class HiredWorkerExpenseExport implements FromArray , WithHeadings , ShouldAutoS
     {
         return $this->data;
     }
+    //'project' =>  " " ,
+    //                'date' => " " ,
+    //                'comment' => " ",
+    //                'income_type' => " " ,
+    //                'currency' => " " ,
+    //                'currency_rate' => " " ,
+    //                'summa' => "JAMI SUMMA:" ,
+    //                'amount' => $totalAmount ,
     public function headings(): array
     {
         return [
-            'OBEKT NOMI','ISHCHI ISMI','SANA','VALYUTA','KURS','SUMMA','JAMI'
+            'OBEKT NOMI','SANA','IZOH','VALYUTA','KURS','SUMMA','JAMI'
         ];
     }
     public function map($row): array
     {
         return [
-            $row['block'],
+            $row['project'],
             $row['name'],
             $row['date'],
             $row['currency'],

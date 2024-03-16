@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\IncomesExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreIncomeRequest;
 use App\Http\Resources\FilterIncomeCollection;
@@ -10,8 +11,10 @@ use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowIncomeResource;
 use App\Models\HouseholdExpense;
 use App\Models\Income;
+use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class IncomeController extends Controller
 {
@@ -21,6 +24,44 @@ class IncomeController extends Controller
     public function index()
     {
         //
+    }
+    public function exportExcel($project_id){
+        $project = Project::find($project_id);
+
+        if(!$project){
+           $incomesData = Income::all();
+        }else{
+            $incomesData = Income::where('project_id' , $project->id)->get();
+        }
+        $totalAmount = 0;
+        $data = [];
+        if (!empty($incomesData)){
+            foreach ($incomesData as $income){
+                $totalAmount += $income->amount;
+             $data[] = [
+                 'project' => $income->project->name ?? "" ,
+                 'date' => date($income->date,'d.m.Y)') ,
+                 'comment' => $income->comment ,
+                 'income_type' => $income->income_type ,
+                 'currency' => $income->currency ,
+                 'currency_rate' => $income->currency_rate ,
+                 'summa' => $income->summa ,
+                 'amount' => $income->amount ,
+             ];
+            }
+            $data [] = [
+                'project' =>  " " ,
+                'date' => " " ,
+                'comment' => " ",
+                'income_type' => " " ,
+                'currency' => " " ,
+                'currency_rate' => " " ,
+                'summa' => "JAMI SUMMA:" ,
+                'amount' => $totalAmount ,
+            ];
+
+        }
+        return Excel::download(new IncomesExport($data)  , "Daromad.xlsx");
     }
 
     public function filterData(Request $request){

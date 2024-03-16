@@ -40,7 +40,7 @@ class IncomeController extends Controller
                 $totalAmount += $income->amount;
              $data[] = [
                  'project' => $income->project->name ?? "" ,
-                 'date' => date($income->date,'d.m.Y)') ,
+                 'date' => $income->date ,
                  'comment' => $income->comment ,
                  'income_type' => $income->income_type ,
                  'currency' => $income->currency ,

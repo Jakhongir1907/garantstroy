@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\ExpenseExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\ReturnResponseResource;
 use App\Http\Resources\ShowExpenseResource;
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExpenseController extends Controller
 {
@@ -115,7 +117,7 @@ class ExpenseController extends Controller
             ];
 
         }
-
+        return Excel::download(new ExpenseExport($data) , 'Xarajatlar.xlsx');
     }
     /**
      * Store a newly created resource in storage.

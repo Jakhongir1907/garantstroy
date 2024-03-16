@@ -96,7 +96,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
 // Workers CRUD
     Route::apiResource('workers' , WorkerController::class);
     Route::post('/filter/workers' , [WorkerController::class , 'filterData']);
-    Route::get('/workers/calculate-salary' , [WorkerController::class ,'calculateSalary']);
+    Route::get('/ishchilar/calculate-salary' , [WorkerController::class ,'calculateSalary']);
 
 
     Route::apiResource('expenses' ,ExpenseController::class);

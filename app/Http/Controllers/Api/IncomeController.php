@@ -26,7 +26,6 @@ class IncomeController extends Controller
         //
     }
     public function exportExcel(Request $request){
-        return $request;
         $project_id = $request->project_id;
         $project = Project::find($project_id);
 

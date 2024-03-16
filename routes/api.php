@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\AdvancePaymentController;
 use App\Http\Controllers\Api\WorkerAccountController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ExpenseItemController;
+use App\Http\Controllers\Api\DashboardController;
 
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -181,6 +182,7 @@ Route::get('/contracts/export/{contract_id}' , [ContractFloorController::class ,
 Route::get('/hired-workers/export/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'exportExcel']);
 Route::get('/daromad/export' , [IncomeController::class , 'exportExcel']);
 Route::get('/xarajat/export' , [ExpenseController::class , 'exportExcel']);
+Route::get('/dashboard/data' , [DashboardController::class,'allData']);
 
 
 

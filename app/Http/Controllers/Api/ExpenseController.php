@@ -77,7 +77,7 @@ class ExpenseController extends Controller
         if(empty($projectId) && empty($startDate) && empty($endDate) && empty($category) && empty($user_id)){
                 $expenses = Expense::all();
         }else{
-            $expenses = Expense::when($projectId, function ($query) use ($projectId) {
+            $expenses = Expense::when($projectId, function ($query) use ($projectId){
                 $query->where('project_id', $projectId);
             })->when($category, function ($query) use ($category) {
                 $query->where('category', $category);

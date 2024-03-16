@@ -42,7 +42,7 @@ class IncomeController extends Controller
                  'project' => $income->project->name ?? "" ,
                  'date' => $income->date ,
                  'comment' => $income->comment ,
-                 'income_type' => $income->income_type ,
+                 'income_type' => ($income->income_type=='transfer')?"O'kazma":"Naqd" ,
                  'currency' => $income->currency ,
                  'currency_rate' => $income->currency_rate ,
                  'summa' => $income->summa ,

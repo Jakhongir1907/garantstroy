@@ -34,7 +34,7 @@ class IncomesExport implements FromArray,ShouldAutoSize,WithHeadings
     public function headings(): array
     {
         return [
-            'OBEKT NOMI','SANA','IZOH','VALYUTA','KURS','SUMMA','JAMI'
+            'OBEKT NOMI','SANA','IZOH',"NAQD YOKI BANK",'VALYUTA','KURS','SUMMA','JAMI'
         ];
     }
     public function map($row): array

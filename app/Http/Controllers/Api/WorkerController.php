@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\SalaryExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWorkerRequest;
 use App\Http\Requests\UpdateWorkerRequest;
@@ -12,10 +13,13 @@ use App\Http\Resources\WorkerAccountCollection;
 use App\Http\Resources\WorkerCollection;
 use App\Models\AdvancePayment;
 use App\Models\DayOff;
+use App\Models\Project;
 use App\Models\Worker;
 use App\Models\WorkerAccount;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WorkerController extends Controller
 {
@@ -45,40 +49,58 @@ class WorkerController extends Controller
     }
 
    public function calculateSalary(Request $request){
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
-        $workers = Worker::all();
+        $project = Project::find($request->project_id);
+        if($project){
+            $workers = Worker::where('project_id' , $project->id)->get();
+        }else{
+            $workers = Worker::all();
+        }
         $monthlySalaries = [];
+        $totalAmount = 0;
         foreach($workers as $worker){
+            $startDate = Carbon::parse($request->start_date);
+            $endDate = Carbon::parse($request->end_date);
             $workerAccount = WorkerAccount::where('worker_id' , $worker->id)->where('status','!=','payed')->latest()->first();
             if($workerAccount){
                 if($workerAccount->started_date > $startDate){
-                    $startDate = $workerAccount->start_date;
+                    $startDate = Carbon::parse($workerAccount->started_date);
                 }
-                if(!is_null($workerAccount->finished_date)){
+                if($workerAccount->status != 'working'){
                     if($endDate > $workerAccount->finished_date){
-                    $endDate = $workerAccount->finished_date;
+                     $endDate = Carbon::parse($workerAccount->finished_date);
                     }
                 }
-                $dayOffs = $workerAccount->dayOffs()->whereBetween('date' , [$startDate , $endDate])->count();
+
+                $dayOffs = $workerAccount->dayOffs()->whereBetween('date' , [$startDate , $endDate])->sum('quantity');
                 $totalDaysInMonth = $startDate->diffInDays($endDate) + 1;
                 $effectiveWorkDays = $totalDaysInMonth-$dayOffs;
-                $advancePayments = $workerAccount->advancePayments()->whereBetween('date' , [$startDate , $endDate])->where('type' , 'advance')->sum('amount');
+                $advancePayments = $workerAccount->advancePayments()->where('type' ,'=' ,'advance')->whereBetween('date' , [$startDate , $endDate])->sum('amount');
                 $monthlySalaries [] = [
+                    'project' => $worker->project->name ?? " " ,
                     'name' => $worker->name ,
                     'work_days' => $effectiveWorkDays ,
                     'day_offs' => $dayOffs ,
                     'salary_rate' => $workerAccount->salary_rate ,
                     'advance_payments' => $advancePayments ,
                     'amount' => ($effectiveWorkDays*$workerAccount->salary_rate) - $advancePayments ,
-                    'from' => $startDate ,
-                    'to' => $endDate ,
+                    'from' => $startDate->format('d-m-Y') ,
+                    'to' => $endDate->format('d-m-Y') ,
                 ];
+                $totalAmount += (($effectiveWorkDays*$workerAccount->salary_rate) - $advancePayments);
             }
         }
-        return response()->json([
-            'salaries' => $monthlySalaries
-        ]);
+       $monthlySalaries [] = [
+           'project' => " " ,
+           'name' => " " ,
+           'work_days' => " " ,
+           'day_offs' => " " ,
+           'salary_rate' => " " ,
+           'advance_payments' => " " ,
+           'amount' => " " ,
+           'from' => "JAMI SUMMA:" ,
+           'to' => $totalAmount ,
+       ];
+        return Excel::download(new SalaryExport($monthlySalaries) , 'Oylik.xlsx');
    }
 
     public function filterData(Request $request){

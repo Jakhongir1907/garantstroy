@@ -22,7 +22,7 @@ class ShowWorkerResource extends JsonResource
             'position' => $this->position ,
             'project_id' => ($this->project) ? $this->project_id : "" ,
             'project_name' => ($this->project) ? $this->project->name : "" ,
-            'workerAccounts' => new WorkerAccountCollection($this->workerAccounts) ?? [],
+//            'workerAccounts' => new WorkerAccountCollection($this->workerAccounts) ?? [],
         ];
     }
 }

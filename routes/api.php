@@ -156,6 +156,9 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('incomes' , IncomeController::class);
     Route::post('/filter/incomes' , [IncomeController::class , 'filterData']);
 
+    // Dashboard
+        Route::get('/dashboard/data' , [DashboardController::class,'allData']);
+
     Route::apiResource('day-offs' , DayOffController::class);
     Route::apiResource('advance-payments' , AdvancePaymentController::class);
     Route::apiResource('worker-accounts' , WorkerAccountController::class);
@@ -182,7 +185,7 @@ Route::get('/contracts/export/{contract_id}' , [ContractFloorController::class ,
 Route::get('/hired-workers/export/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'exportExcel']);
 Route::get('/daromad/export' , [IncomeController::class , 'exportExcel']);
 Route::get('/xarajat/export' , [ExpenseController::class , 'exportExcel']);
-Route::get('/dashboard/data' , [DashboardController::class,'allData']);
+
 
 
 

@@ -177,7 +177,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
 Route::get('/trade-expenses/export/{house_trade_id}' , [HouseTradeExpenseController::class , 'exportExcel']);
 Route::get('/contracts/export/{contract_id}' , [ContractFloorController::class , 'exportExcel']);
 Route::get('/hired-workers/export/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'exportExcel']);
-Route::get('/incomes/export' , [IncomeController::class , 'exportExcel']);
+Route::get('/daromad/export' , [IncomeController::class , 'exportExcel']);
 
 
 

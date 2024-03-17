@@ -15,7 +15,10 @@ return [
     |
     */
 
+
     'paths' => ['*'],
+
+    'frontend_url' => ['https://garanstroy.uz/'],
 
     'allowed_methods' => ['*'],
 

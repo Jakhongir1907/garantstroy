@@ -17,12 +17,6 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
-    'api' => [
-        'driver' => 'sanctum',
-        'provider' => 'users',
-        'hash' => false ,
-        'expire' => 14400
-    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -45,6 +39,12 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+            'hash' => false ,
+            'expire' => 43200 ,
         ],
     ],
 

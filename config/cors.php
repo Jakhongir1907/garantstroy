@@ -18,7 +18,7 @@ return [
 
     'paths' => ['*'],
 
-    'frontend_url' => ['https://garanstroy.uz/'],
+    'frontend_url' => ['https://garantstroy.uz/'],
 
     'allowed_methods' => ['*'],
 

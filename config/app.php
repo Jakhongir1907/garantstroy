@@ -57,7 +57,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'frontend_url' => env('FRONTEND_URL', 'https://garanstroy.uz'),
+    'frontend_url' => env('FRONTEND_URL', 'https://garantstroy.uz'),
 
     'asset_url' => env('ASSET_URL'),
 

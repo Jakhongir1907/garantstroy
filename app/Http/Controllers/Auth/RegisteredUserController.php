@@ -38,10 +38,11 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         $token = $user->createToken('api-token');
-
+        $role = $user->role();
         return response()->json([
             'user' => $user ,
-            'token' => $token->plainTextToken
+            'role' => $role ,
+            'token' => $token->plainTextToken ,
         ]);
     }
 }

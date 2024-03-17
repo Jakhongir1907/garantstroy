@@ -16,6 +16,15 @@ class User extends Authenticatable
     public function expenses(){
         return $this->hasMany(Expense::class);
     }
+    public function role(){
+        if($this->is_admin){
+            return 'admin';
+        }else{
+            return 'user';
+        }
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *

@@ -194,6 +194,12 @@ class ExpenseController extends Controller
                 'message' => 'Record not found!'
             ] , 404);
         }
+        if($expense->expenseItems()->count() > 0){
+            return new ReturnResponseResource([
+                'code' => 403 ,
+                'message' => "You can not delete this item!"
+            ] , 403);
+        }
         $expense->delete();
         return new ReturnResponseResource([
             'code' => 201 ,

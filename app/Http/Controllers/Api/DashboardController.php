@@ -18,7 +18,9 @@ class DashboardController extends Controller
        // Foyda uchun
         $months = [];
         $currentDate = new \DateTime();
-        for ($i = 1; $i <= 6; $i++) {
+        $formattedDate = $currentDate->format('F Y');
+        $months[] = $formattedDate;
+        for ($i = 0; $i < 5; $i++) {
             $currentDate->modify('-1 month');
             $formattedDate = $currentDate->format('F Y');
             $months[] = $formattedDate;

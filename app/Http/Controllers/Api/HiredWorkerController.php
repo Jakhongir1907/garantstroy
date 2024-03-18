@@ -96,6 +96,12 @@ class HiredWorkerController extends Controller
                 'message' => 'Record not found!'
             ] , 404);
         }
+        if($hiredWorker->expenses()->count() > 0){
+            return new ReturnResponseResource([
+                'code' => 403 ,
+                'message' => "You can not delete this item!"
+            ] , 403);
+        }
         $hiredWorker->delete();
         return new ReturnResponseResource([
             'code' => 201 ,

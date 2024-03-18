@@ -90,6 +90,12 @@ class ProjectController extends Controller
                 'message' => 'Record not found!'
             ] , 404);
         }
+        if($project->hiredWorkers()->count() || $project->tools()->count() || $project->contracts()->count() > 0 || $project->incomes()->count() > 0 || $project->workers()->count() > 0 || $project->expenses()->count() > 0){
+            return new ReturnResponseResource([
+                'code' => 403 ,
+                'message' => 'You can not delete this item!'
+            ] , 403);
+        }
         $project->delete();
         return new ReturnResponseResource([
             'code' => 201 ,

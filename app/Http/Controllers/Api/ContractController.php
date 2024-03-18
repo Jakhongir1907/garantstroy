@@ -23,7 +23,6 @@ class ContractController extends Controller
     public function filterData(Request $request)
     {
         $contracts = Contract::orderByDesc('created_at')->paginate(10);
-
         $project_id = $request->project_id;
         $project = Project::find($project_id);
         if($project){
@@ -93,9 +92,13 @@ class ContractController extends Controller
                 'message' => 'Record not found!'
             ] , 404);
         }
-
+        if($contract->floors()->count() > 0){
+            return new ReturnResponseResource([
+                'code' => 403 ,
+                'message' => 'You can not delete this worker!'
+            ] , 403);
+        }
         $contract->delete();
-
         return new ReturnResponseResource([
             'code' => 201 ,
             'message' => 'Record has been deleted successfully!'

@@ -90,6 +90,12 @@ class HouseTradeController extends Controller
                 'message' => 'Record not found!'
             ] , 404);
         }
+        if($houseTrade->houseTradeExpenses()->count() > 0){
+            return new ReturnResponseResource([
+                'code' => 403 ,
+                'message' => "You can not delete this item!"
+            ], 403);
+        }
         $houseTrade->delete();
         return new ReturnResponseResource([
             'code' => 201 ,

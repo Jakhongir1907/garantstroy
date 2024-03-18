@@ -97,8 +97,6 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('workers' , WorkerController::class);
     Route::post('/filter/workers' , [WorkerController::class , 'filterData']);
 
-
-
     Route::apiResource('expenses' ,ExpenseController::class);
     Route::apiResource('expense-items' ,ExpenseItemController::class);
 
@@ -107,6 +105,11 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('projects' , ProjectController::class);
 
     Route::get('/all-projects' , [ProjectController::class , 'allData']);
+    // Workers Payments , Day Offs ,
+
+    Route::apiResource('day-offs' , DayOffController::class);
+    Route::apiResource('advance-payments' , AdvancePaymentController::class);
+    Route::apiResource('worker-accounts' , WorkerAccountController::class);
 
     Route::middleware(['admin'])->group(function (){
 //     Other Expenses
@@ -161,9 +164,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     // Dashboard
         Route::get('/dashboard/data' , [DashboardController::class,'allData']);
 
-    Route::apiResource('day-offs' , DayOffController::class);
-    Route::apiResource('advance-payments' , AdvancePaymentController::class);
-    Route::apiResource('worker-accounts' , WorkerAccountController::class);
+
 
 
 // Excel Exports

@@ -192,12 +192,12 @@ class WorkerController extends Controller
                 'message' => 'Record not found!'
             ]);
         }
-//        if($worker->dayOffs()->count() > 0 || $worker->advancePayments()->count() > 0 || $worker->workerAccounts()->count() > 0){
-//            return new ReturnResponseResource([
-//                'code' => 404 ,
-//                'message' => 'You can not delete this worker!'
-//            ]);
-//        }
+        if($worker->workerAccounts()->count() > 0){
+            return new ReturnResponseResource([
+                'code' => 404 ,
+                'message' => 'You can not delete this worker!'
+            ]);
+        }
         $worker->delete();
         return new ReturnResponseResource([
             'code' => 201 ,

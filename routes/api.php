@@ -110,6 +110,10 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('day-offs' , DayOffController::class);
     Route::apiResource('advance-payments' , AdvancePaymentController::class);
     Route::apiResource('worker-accounts' , WorkerAccountController::class);
+// Tools CRUD
+    Route::apiResource('tools' , ToolController::class);
+    Route::post('/filter/tools' , [ToolController::class , 'filterData']);
+
 
     Route::middleware(['admin'])->group(function (){
 //     Other Expenses
@@ -154,9 +158,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::apiResource('hired-worker-expenses' ,HiredWorkerExpenseController::class);
     Route::get('/hired-expenses/{hired_worker_id}' , [HiredWorkerExpenseController::class , 'getByWorker']);
 //
-// Tools CRUD
-    Route::apiResource('tools' , ToolController::class);
-    Route::post('/filter/tools' , [ToolController::class , 'filterData']);
+
 // Incomes CRUD
     Route::apiResource('incomes' , IncomeController::class);
     Route::post('/filter/incomes' , [IncomeController::class , 'filterData']);

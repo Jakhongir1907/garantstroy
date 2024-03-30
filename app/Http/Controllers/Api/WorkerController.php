@@ -60,33 +60,35 @@ class WorkerController extends Controller
         foreach($workers as $worker){
             $startDate = Carbon::parse($request->start_date);
             $endDate = Carbon::parse($request->end_date);
-            $workerAccount = WorkerAccount::where('worker_id' , $worker->id)->where('status','!=','payed')->latest()->first();
-            if($workerAccount){
-                if($workerAccount->started_date > $startDate){
-                    $startDate = Carbon::parse($workerAccount->started_date);
-                }
-                if($workerAccount->status != 'working'){
-                    if($endDate > $workerAccount->finished_date){
-                     $endDate = Carbon::parse($workerAccount->finished_date);
+            $workerAccounts = WorkerAccount::where('worker_id' , $worker->id)->where('status','!=','payed')->latest()->get();
+            if($workerAccounts){
+                foreach ($workerAccounts as $workerAccount){
+                    if($workerAccount->started_date > $startDate){
+                        $startDate = Carbon::parse($workerAccount->started_date);
                     }
-                }
+                    if($workerAccount->status != 'working'){
+                        if($endDate > $workerAccount->finished_date){
+                            $endDate = Carbon::parse($workerAccount->finished_date);
+                        }
+                    }
 
-                $dayOffs = $workerAccount->dayOffs()->whereBetween('date' , [$startDate , $endDate])->sum('quantity');
-                $totalDaysInMonth = $startDate->diffInDays($endDate) + 1;
-                $effectiveWorkDays = $totalDaysInMonth-$dayOffs;
-                $advancePayments = $workerAccount->advancePayments()->where('type' ,'=' ,'advance')->whereBetween('date' , [$startDate , $endDate])->sum('amount');
-                $monthlySalaries [] = [
-                    'project' => $worker->project->name ?? " " ,
-                    'name' => $worker->name ,
-                    'work_days' => $effectiveWorkDays ,
-                    'day_offs' => $dayOffs ,
-                    'salary_rate' => $workerAccount->salary_rate ,
-                    'advance_payments' => $advancePayments ,
-                    'amount' => ($effectiveWorkDays*$workerAccount->salary_rate) - $advancePayments ,
-                    'from' => $startDate->format('d-m-Y') ,
-                    'to' => $endDate->format('d-m-Y') ,
-                ];
-                $totalAmount += (($effectiveWorkDays*$workerAccount->salary_rate) - $advancePayments);
+                    $dayOffs = $workerAccount->dayOffs()->whereBetween('date' , [$startDate , $endDate])->sum('quantity');
+                    $totalDaysInMonth = $startDate->diffInDays($endDate) + 1;
+                    $effectiveWorkDays = $totalDaysInMonth-$dayOffs;
+                    $advancePayments = $workerAccount->advancePayments()->where('type' ,'=' ,'advance')->whereBetween('date' , [$startDate , $endDate])->sum('amount');
+                    $monthlySalaries [] = [
+                        'project' => $worker->project->name ?? " " ,
+                        'name' => $worker->name ,
+                        'work_days' => $effectiveWorkDays ,
+                        'day_offs' => $dayOffs ,
+                        'salary_rate' => $workerAccount->salary_rate ,
+                        'advance_payments' => $advancePayments ,
+                        'amount' => ($effectiveWorkDays*$workerAccount->salary_rate) - $advancePayments ,
+                        'from' => $startDate->format('d-m-Y') ,
+                        'to' => $endDate->format('d-m-Y') ,
+                    ];
+                    $totalAmount += (($effectiveWorkDays*$workerAccount->salary_rate) - $advancePayments);
+                }
             }
         }
        $monthlySalaries [] = [
@@ -156,7 +158,6 @@ class WorkerController extends Controller
 
         return new ShowWorkerResource($worker);
     }
-
     /**
      * Update the specified resource in storage.
      */

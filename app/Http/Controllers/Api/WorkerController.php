@@ -63,6 +63,8 @@ class WorkerController extends Controller
             $workerAccounts = WorkerAccount::where('worker_id' , $worker->id)->where('status','!=','payed')->latest()->get();
             if($workerAccounts){
                 foreach ($workerAccounts as $workerAccount){
+                    $startDate = Carbon::parse($request->start_date);
+                    $endDate = Carbon::parse($request->end_date);
                     if($workerAccount->started_date > $startDate){
                         $startDate = Carbon::parse($workerAccount->started_date);
                     }

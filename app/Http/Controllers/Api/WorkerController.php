@@ -180,6 +180,11 @@ class WorkerController extends Controller
             'project_id' => $request->project_id ,
         ]);
 
+        $workerAccount = WorkerAccount::where('worker_id' , $worker->id)->where('status' ,'working')->first();
+        $workerAccount->update([
+            'salary_rate' => $request->salary_rate ,
+        ]);
+
         return new ShowWorkerResource($worker);
     }
 

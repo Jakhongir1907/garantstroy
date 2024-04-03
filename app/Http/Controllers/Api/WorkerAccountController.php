@@ -97,7 +97,7 @@ class WorkerAccountController extends Controller
         if(!$workerAccount){
             return new ReturnResponseResource([
                 'code' => 404 ,
-                'message' => 'Record nout found!'
+                'message' => 'Record not found!'
             ]);
         }
         if($workerAccount->status=="finished" || $workerAccount->status=="payed"){

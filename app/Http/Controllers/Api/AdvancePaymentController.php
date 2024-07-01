@@ -33,7 +33,7 @@ class AdvancePaymentController extends Controller
      */
     public function store(StoreAdvancePaymentRequest $request)
     {
-        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        $w_account = WorkerAccount::whereIn('status',['working' , 'finished'])->where('worker_id',$request->worker_id)->latest()->first();
         if(!$w_account){
             return new ReturnResponseResource([
                 'code' => 404 ,

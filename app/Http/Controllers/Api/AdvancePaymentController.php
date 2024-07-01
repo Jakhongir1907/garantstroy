@@ -19,7 +19,7 @@ class AdvancePaymentController extends Controller
      */
     public function index(Request $request)
     {
-        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        $w_account = WorkerAccount::whereIn('status',['working' , 'finished'])->where('worker_id',$request->worker_id)->latest()->first();
        $advancePayments = [];
         if($w_account){
             $advancePayments = AdvancePayment::where('worker_account_id' ,$w_account->id)->get();
@@ -48,7 +48,7 @@ class AdvancePaymentController extends Controller
         ]);
         return new ReturnResponseResource([
             'code' => 200,
-            'message' => "Worker payment added successfuly!"
+            'message' => "Worker payment added successfully!"
         ] , 200);
     }
 

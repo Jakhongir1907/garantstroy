@@ -73,7 +73,6 @@ class WorkerController extends Controller
                             $endDate = Carbon::parse($workerAccount->finished_date);
                         }
                     }
-
                     $dayOffs = $workerAccount->dayOffs()->whereBetween('date' , [$startDate , $endDate])->sum('quantity');
                     $totalDaysInMonth = $startDate->diffInDays($endDate) + 1;
                     $effectiveWorkDays = $totalDaysInMonth-$dayOffs;

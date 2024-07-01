@@ -18,7 +18,7 @@ class DayOffController extends Controller
      */
     public function index(Request $request)
     {
-        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        $w_account = WorkerAccount::whereIn('status',['working','finished'])->where('worker_id',$request->worker_id)->latest()->first();
         $dayOffs = [];
         if($w_account){
         $dayOffs = DayOff::where('worker_account_id', $w_account->id)->get();
@@ -31,7 +31,7 @@ class DayOffController extends Controller
      */
     public function store(StoreDayOffRequest $request)
     {
-        $w_account = WorkerAccount::where('status','working')->where('worker_id',$request->worker_id)->latest()->first();
+        $w_account = WorkerAccount::whereIn('status',['working','finished'])->where('worker_id',$request->worker_id)->latest()->first();
         if(!$w_account){
             return new ReturnResponseResource([
                 'code' => 404 ,

@@ -166,7 +166,9 @@ Route::middleware(['auth:sanctum'])->group(function (){
     // Dashboard
         Route::get('/dashboard/data' , [DashboardController::class,'allData']);
 
-
+        Route::get('/test' , function (){
+            return "test";
+        });
 
 
 // Excel Exports

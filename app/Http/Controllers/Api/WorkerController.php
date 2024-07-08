@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class WorkerController extends Controller
 {
@@ -199,12 +200,17 @@ class WorkerController extends Controller
                 'message' => 'Record not found!'
             ]);
         }
-        if($worker->workerAccounts()->count() > 0){
-            return new ReturnResponseResource([
-                'code' => 404 ,
-                'message' => 'You can not delete this worker!'
-            ]);
+//        if($worker->workerAccounts()->count() > 0){
+//            return new ReturnResponseResource([
+//                'code' => 404 ,
+//                'message' => 'You can not delete this worker!'
+//            ]);
+//        }
+        foreach($worker->workerAccounts as $workerAccount){
+            DB::table('day_offs')->where('worker_account_id', $workerAccount->id)->delete();
+            DB::table('advance_payments')->where('worker_account_id', $workerAccount->id)->delete();
         }
+        $worker->workerAccounts()->delete();
         $worker->delete();
         return new ReturnResponseResource([
             'code' => 201 ,
